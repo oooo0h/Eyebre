@@ -83,7 +83,7 @@ export function setupDesktopIntro(lockup) {
       onComplete: () => {
         lockup.classList.remove('eyebre-intro-pending');
         gsap.set([mark, copy, fill, flow], { clearProps: 'transform,opacity,visibility' });
-        lockup.dataset.shakeCount = '1';
+        lockup.dataset.shakeCount = '0';
         record('complete');
       },
     });
@@ -95,15 +95,7 @@ export function setupDesktopIntro(lockup) {
       .addLabel('open', .94)
       .call(() => record('reveal'), null, 'open')
       .to(mark, { x: 0, duration: .74, ease: 'power3.out' }, 'open')
-      .to(copy, { x: 0, duration: .74, ease: 'power3.out' }, 'open')
-      .addLabel('settle', 'open+=.74')
-      .call(() => record('settle'), null, 'settle')
-      .to(mark, { x: -5, duration: .08 }, 'settle')
-      .to(copy, { x: 5, duration: .08 }, 'settle')
-      .to(mark, { x: 3, duration: .12, ease: 'power1.inOut' }, 'settle+=.08')
-      .to(copy, { x: -3, duration: .12, ease: 'power1.inOut' }, 'settle+=.08')
-      .to(mark, { x: 0, duration: .12 }, 'settle+=.2')
-      .to(copy, { x: 0, duration: .12 }, 'settle+=.2');
+      .to(copy, { x: 0, duration: .74, ease: 'power3.out' }, 'open');
   }
 
   function onModeChange() {

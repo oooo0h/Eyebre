@@ -1,5 +1,6 @@
 reference/
 qa/
 node_modules/
+.tools/
 .sites-runtime/
 *.zip

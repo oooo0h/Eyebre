@@ -1,0 +1,206 @@
+[
+  {
+    "filename": "binoculars.pdf",
+    "original": "EYEBRE图册-双筒望远镜..pdf",
+    "pageCount": 171,
+    "bytes": 23362047,
+    "originalBytes": 265878767,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "maxRasterEdge": 1600,
+      "jpegQuality": 70,
+      "opaqueImagesReplaced": 176
+    },
+    "removedPrivateEditingData": true,
+    "fontSubsets": true,
+    "cover": "cover-binoculars.webp"
+  },
+  {
+    "filename": "astronomical-telescopes.pdf",
+    "original": "天文望远镜系列画册.pdf",
+    "pageCount": 35,
+    "bytes": 11735915,
+    "originalBytes": 42437107,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-astronomical-telescopes.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "monoculars.pdf",
+    "original": "单筒望远镜画册.pdf",
+    "pageCount": 44,
+    "bytes": 20475771,
+    "originalBytes": 23252331,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-monoculars.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "riflescopes.pdf",
+    "original": "瞄准镜画册-最终版本.pdf",
+    "pageCount": 91,
+    "bytes": 20303194,
+    "originalBytes": 103236796,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-riflescopes.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "spotting-scopes.pdf",
+    "original": "EYEBRE图册-观鸟镜.pdf",
+    "pageCount": 30,
+    "bytes": 13475894,
+    "originalBytes": 20748050,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-spotting-scopes.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "rangefinders.pdf",
+    "original": "测距仪测距模块宣传册.pdf",
+    "pageCount": 31,
+    "bytes": 20413408,
+    "originalBytes": 50299139,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-rangefinders.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "night-vision.pdf",
+    "original": "Eyebre-夜视仪热成像图册.pdf",
+    "pageCount": 105,
+    "bytes": 23178045,
+    "originalBytes": 70288579,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "maxRasterEdge": 1800,
+      "jpegQuality": 76,
+      "opaqueImagesReplaced": 99
+    },
+    "removedPrivateEditingData": false,
+    "fontSubsets": true,
+    "cover": "cover-night-vision.webp"
+  },
+  {
+    "filename": "thermal-en.pdf",
+    "original": "2026热成像 英文.pdf",
+    "pageCount": 48,
+    "bytes": 22287255,
+    "originalBytes": 93829161,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "maxRasterEdge": 1800,
+      "jpegQuality": 82,
+      "opaqueImagesReplaced": 22
+    },
+    "removedPrivateEditingData": false,
+    "fontSubsets": true,
+    "cover": "cover-thermal-en.webp"
+  },
+  {
+    "filename": "thermal-zh.pdf",
+    "original": "2026热成像 中文.pdf",
+    "pageCount": 38,
+    "bytes": 10036583,
+    "originalBytes": 32791599,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-thermal-zh.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "microscopes.pdf",
+    "original": "显微镜产品名录.pdf",
+    "pageCount": 21,
+    "bytes": 19074305,
+    "originalBytes": 30439984,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-microscopes.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "mounts-clamps.pdf",
+    "original": "支架+夹具 画册 最新.pdf",
+    "pageCount": 45,
+    "bytes": 11375612,
+    "originalBytes": 18332239,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 180,
+      "dpiTarget": 150,
+      "jpegQuality": 80
+    },
+    "cover": "cover-mounts-clamps.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  },
+  {
+    "filename": "magnifiers.pdf",
+    "original": "放大镜画册.pdf",
+    "pageCount": 60,
+    "bytes": 24070592,
+    "originalBytes": 71112191,
+    "textPreserved": true,
+    "allPagesRenderable": true,
+    "settings": {
+      "dpiThreshold": 155,
+      "dpiTarget": 130,
+      "jpegQuality": 76
+    },
+    "cover": "cover-magnifiers.webp",
+    "removedPrivateEditingData": false,
+    "fontSubsets": true
+  }
+]

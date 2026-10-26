@@ -52,3 +52,7 @@ html[lang=zh-CN] #home-hero-title,html[lang=zh-CN] #home-reel-desc,html[lang=zh-
   #eyebre-desktop-copy{font-size:18px}
   #eyebre-desktop-lockup{--brand-gap:14px}
 }
+/* CJK glyphs occupy a full em; the original Latin roll-up used .6em slots. */
+html[lang=zh-CN] #home-reel-video-title .home-reel-video-title-word{height:1.15em;overflow:hidden}
+html[lang=zh-CN] #home-reel-video-title .char-wrapper{width:1.02em;height:1.15em;top:0;flex-shrink:0}
+html[lang=zh-CN] #home-reel-video-title .char-wrapper .char{display:block;float:left;clear:both;line-height:1.15}

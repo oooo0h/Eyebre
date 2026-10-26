@@ -4,8 +4,8 @@
   const stored = (store, key) => { try { return store.getItem(key); } catch { return null; } };
   const save = (store, key, value) => { try { store.setItem(key, value); } catch {} };
   const requested = new URL(location.href).searchParams.get('lang');
-  const lang = (requested || stored(localStorage, 'eyebre-language')) === 'zh' ? 'zh' : 'en';
-  const isZh = lang === 'zh';
+  let lang = (requested || stored(localStorage, 'eyebre-language')) === 'zh' ? 'zh' : 'en';
+  let isZh = lang === 'zh';
   document.documentElement.lang = isZh ? 'zh-CN' : 'en';
   const t = (en, zh) => isZh ? zh : en;
   // Closing punctuation belongs to its preceding glyph, so it cannot become
@@ -24,9 +24,11 @@
     {id:'ddd_2024', en:'Mounts & Clamps', zh:'支架&夹具', subEn:'A steady foundation for every view.', subZh:'稳住视角，让观察从容展开。', bg:'#261c46', color:'#ffffff', shadow:'.95'},
   ];
   const text = (selector, value, segment = false) => {
-    document.querySelectorAll(selector).forEach(el => {
+    const home=window.EyebreRuntime?.getHomeRoot?.();
+    const elements=new Set([...document.querySelectorAll(selector),...(home&&!home.isConnected?[...home.querySelectorAll(selector)]:[])]);
+    elements.forEach(el => {
+      if(segment)el.setAttribute('aria-label',value);
       if (isZh && segment) {
-        el.setAttribute('aria-label', value);
         // Original SplitType animates whitespace-separated words. Segment CJK
         // characters before its initial measurement so translated lines wrap.
         value = segmentCjk(value);
@@ -44,7 +46,7 @@
     '#home-reel-cta-text': ['About Eyebre', '关于 Eyebre'],
     '#home-reel-video-title': ['Brand Film', '品牌 影片'],
     '#home-featured-title': ['Our Catalogues', '产品图册'],
-    '#home-featured-disclaimer': ['A range of optical instruments for a closer view. Reference visuals remain here until our product catalogues are selected.', '覆盖多元观察场景的光学产品系列。目前暂保留参考画面，正式产品图册将陆续替换。'],
+    '#home-featured-disclaimer': ['Explore the Eyebre optical range. Select a catalogue to browse the complete PDF.', '探索 Eyebre 光学产品系列，点击对应图册，在线阅读完整 PDF。'],
     '#home-featured-cta-text': ['Explore Our Range', '探索产品系列'],
     '#home-goal-title': ['Where Curiosity Opens Up A Bigger World', '以好奇，打开更大的世界'],
     '#end-section-subtitle-text': ['Ready To See A Little Further?', '准备好，看得更远一点了吗？'],
@@ -147,7 +149,7 @@
   ['header-menu-newsletter-input-field','footer-newsletter-input-field'].forEach(id=>{const el=document.getElementById(id);if(el){el.type='tel';el.value='139 0689 3397';el.readOnly=true;el.setAttribute('aria-label',t('Call Eyebre','电话联系 Eyebre'));el.removeAttribute('name');}});
   document.addEventListener('submit',event=>{if(event.target.matches('#header-menu-newsletter-form,#footer-newsletter-form')){event.preventDefault();event.stopImmediatePropagation();location.href='tel:+8613906893397';}},true);
 
-  // Preserve all reference card DOM and hover shaders until catalogues are supplied.
+  // Preserve the card DOM and hover shaders with local catalogue covers.
   document.querySelectorAll('.project-item').forEach((card,i) => {
     const catalogue=catalogues[i];
     if(!catalogue){card.remove();return;}
@@ -163,10 +165,18 @@
     const catalogue=catalogues.find(item=>item.id===path.split('/').filter(Boolean).at(-1));
     const next=catalogue?catalogues[(catalogues.indexOf(catalogue)+1)%catalogues.length]:catalogues[0];
     pageTitle.textContent=catalogue?t(catalogue.en,catalogue.zh):t('Product Catalogue','产品图册');
+    if(catalogue){
+      const mediaItems=[...doc.querySelectorAll('.project-details-item')];
+      if(mediaItems.length){
+        const cover=doc.createElement('div');cover.className='project-details-item is-image';
+        Object.assign(cover.dataset,{width:'1200',height:'750',type:'image',filename:`${location.origin}/assets/projects/${catalogue.id}/home`});
+        mediaItems[0].before(cover);mediaItems.forEach(el=>el.remove());
+      }
+    }
     const description=doc.getElementById('project-details-desc');
     if(description){
       description.textContent='';
-      for(const content of [catalogue?t(catalogue.subEn,catalogue.subZh):'',t('Explore the Eyebre optical range. Final product imagery and catalogue pages will be added here. Please contact our team for product information.','探索 Eyebre 光学产品系列。正式产品图片与图册页面将陆续加入，欢迎联系我们了解产品信息。')].filter(Boolean)){const paragraph=doc.createElement('p');paragraph.textContent=content;description.append(paragraph);}
+      for(const content of [catalogue?t(catalogue.subEn,catalogue.subZh):'',t('Browse the complete Eyebre catalogue in the PDF reader. Contact our team for product information.','在 PDF 阅读器中浏览完整 Eyebre 画册，欢迎联系我们了解产品信息。')].filter(Boolean)){const paragraph=doc.createElement('p');paragraph.textContent=content;description.append(paragraph);}
     }
     doc.querySelectorAll('#project-details-launch-cta,#project-details-launch-cta-mobile,#project-details-side-list-links a').forEach(el=>{el.href='tel:+8613906893397';el.removeAttribute('target');});
     doc.querySelectorAll('#project-details-launch-cta-text,#project-details-launch-cta-mobile-text').forEach(el=>el.textContent=t('Contact Eyebre','联系 Eyebre'));
@@ -180,7 +190,7 @@
     if(preview)Object.assign(preview.dataset,{nextId:next.id,nextColorBg:next.bg,nextColorText:next.color,nextShadow:next.shadow});
     doc.querySelectorAll('#project-details-preview-title').forEach(el=>el.textContent=t(next.en,next.zh));
     doc.querySelectorAll('#project-details-preview-footer-text').forEach(el=>el.textContent=t('NEXT CATALOGUE','下一本图册'));
-    return t('Eyebre — Product Catalogue Preview','Eyebre — 产品图册预览');
+    return t('Eyebre — Product Catalogue','Eyebre — 产品图册');
   };
   const detailPageTitle=window.EyebreAdaptFetchedPage(document,location.pathname);
   if(detailPageTitle)document.title=detailPageTitle;
@@ -197,9 +207,7 @@
     const button=event.target.closest('[data-eyebre-lang]');if(!button)return;
     const next=button.dataset.eyebreLang;
     if(next===lang){languageMenu.hidden=true;languageButton.setAttribute('aria-expanded','false');return;}
-    save(localStorage,'eyebre-language',next);
-    save(sessionStorage,'eyebre-scroll',String(window.EyebreRuntime?.getScroll() || 0));
-    const url=new URL(location.href);url.searchParams.set('lang',next);location.replace(url.href);
+    applyLanguage(next);
   });
   document.addEventListener('click',event=>{if(!control.contains(event.target)){languageMenu.hidden=true;languageButton.setAttribute('aria-expanded','false');}});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'){languageMenu.hidden=true;languageButton.setAttribute('aria-expanded','false');}});
@@ -212,4 +220,40 @@
     if(Number.isFinite(previous)&&previous>0)window.EyebreRuntime?.restoreScroll(previous);
     try{sessionStorage.removeItem('eyebre-scroll');}catch{}
   },{once:true});
+
+  function applyLanguage(next){
+    const runtime=window.EyebreRuntime;
+    runtime?.prepareCopy?.();
+    lang=next==='zh'?'zh':'en';isZh=lang==='zh';
+    document.documentElement.lang=isZh?'zh-CN':'en';
+    for(const [selector,variants] of Object.entries(values))text(selector,variants[isZh?1:0],segmented.has(selector));
+    const phrases=isZh?['数十年光学积淀，','带你看见更远的世界。']:['Decades in optics.','A world brought closer.'];
+    const home=runtime?.getHomeRoot?.()||document;
+    const heading=home.querySelector('#home-hero-title');
+    if(heading){heading.setAttribute('aria-label',phrases.join(isZh?'':' '));heading.replaceChildren(...phrases.map(phrase=>{const span=document.createElement('span');span.className='eyebre-hero-phrase';span.textContent=isZh?segmentCjk(phrase):phrase;return span;}));}
+    document.querySelectorAll('.eyebre-desktop-copy-inner>span').forEach((el,i)=>el.textContent=phrases[i]);
+    text('.home-goal-texts-paragraph:nth-child(1)',t('A bird on a distant branch. A city filled with human stories. Light travelling across the night sky. We believe that each new discovery begins with the desire to see a little more — and a new perspective brings the world a little closer.','远处枝头的一只鸟，城市街角的一个故事，穿越夜空而来的星光。每一次新的发现，都始于想看得更清楚一点的好奇心。我们相信，每一个新的视角，都能让世界更近一点。'),true);
+    text('.home-goal-texts-paragraph:nth-child(2)',t('Our range connects the many ways people observe: from exploring nature and looking beyond the horizon to discovering microscopic details. With decades in the optical industry, Eyebre invites you to keep looking, keep exploring and see a bigger world.','从自然观察到远眺天际，从日常探索到微观细节，我们以丰富的产品系列，连接不同尺度的观察世界。凭借数十年光学行业积累，Eyebre 邀你保持好奇，继续探索，看见更远的世界。'),true);
+    home.querySelectorAll('.home-goal-tunnel-title-line').forEach((el,i)=>el.textContent=(isZh?['从 自然 到 人文','让 目光','走向 浩瀚 星空']:['From nature to culture','let your curiosity','travel into the stars'])[i]);
+    const end=document.getElementById('end-section-title-link');if(end)end.innerHTML=isZh?'一起看向<br>更远的世界':'Let’s look<br>further!';
+    const subtitle=document.getElementById('scroll-nav-subtitle');if(subtitle)subtitle.innerHTML=isZh?'继续探索<br>更多可能':'Keep Looking<br>Keep Exploring';
+    document.querySelectorAll('.header-menu-link').forEach((link,i)=>link.querySelectorAll('.header-menu-link-text,.header-menu-link-text-clone').forEach(el=>el.textContent=(isZh?['首页','关于我们','产品图册','联系我们']:['Home','About us','Catalogues','Contact'])[i]));
+    document.querySelectorAll('.footer-address-line').forEach((el,i)=>el.textContent=(isZh?['浙江胤远光学','仪器有限公司','中国 · 浙江','品牌 Eyebre']:['Zhejiang Yinyuan','Optical Instruments','Zhejiang, China','Eyebre'])[i]);
+    document.querySelectorAll('.footer-socials-text').forEach((el,i)=>el.textContent=(isZh?['双筒望远镜','天文望远镜','显微镜']:['Binoculars','Astronomy','Microscopy'])[i]);
+    document.querySelectorAll('#header-menu-newsletter-title>div,.footer-newsletter-line').forEach((el,i)=>el.textContent=(isZh?['了解更多','光学产品']:['Talk to our','optical team'])[i%2]);
+    home.querySelectorAll('.project-item').forEach((card,i)=>{const c=catalogues[i];if(!c)return;card.querySelector('.project-item-line-2-inner').textContent=t(c.en,c.zh);card.querySelector('.project-item-line-1').textContent=t(c.subEn,c.subZh);card.setAttribute('aria-label',t(c.en,c.zh));});
+    logo?.setAttribute('aria-label',t('Eyebre home','Eyebre 首页'));
+    languageButton.querySelector('small').textContent=isZh?'中':'EN';
+    control.querySelectorAll('[data-eyebre-lang]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.eyebreLang===lang)));
+    languageMenu.hidden=true;languageButton.setAttribute('aria-expanded','false');
+    refCaption.textContent=t('REFERENCE REEL · COMPANY FILM TO FOLLOW','参考影片 · 公司介绍视频待替换');
+    document.title=t('Eyebre — A Closer Look At A Bigger World','Eyebre 胤远光学 — 看见，更远的世界');
+    document.querySelector('meta[property="og:title"]').content=document.title;
+    save(localStorage,'eyebre-language',lang);
+    const url=new URL(location.href);url.searchParams.set('lang',lang);history.replaceState(history.state,'',url.href);
+    runtime?.refreshCopy?.();
+    window.dispatchEvent(new CustomEvent('eyebre-language-change',{detail:{language:lang}}));
+  }
+  const readerStyles=document.createElement('link');readerStyles.rel='stylesheet';readerStyles.href='/catalogue-reader.css';document.head.append(readerStyles);
+  import('./catalogue-reader.js').then(({createCatalogueReader})=>createCatalogueReader(catalogues,()=>lang,applyLanguage)).catch(error=>console.warn('Catalogue reader:',error.message));
 })();
