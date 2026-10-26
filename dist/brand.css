@@ -1,8 +1,12 @@
-/* Deliberately limited to the new language control and brand identity.
-   Layout, typography scale, backgrounds and animation styling stay upstream. */
+/* Company identity, language control and the approved first-screen type polish.
+   Scene geometry, backgrounds and animation styling stay upstream. */
 #header-container{overflow:visible}
-#header-logo .eyebre-wordmark{display:inline-block;width:7.5em;font-family:Arial,sans-serif;font-weight:800;font-style:italic;font-size:1.9em;letter-spacing:-.07em;line-height:1}
+#header-logo{display:inline-flex;align-items:center;min-height:44px;flex-shrink:0}
+#header-logo .eyebre-wordmark{display:inline-block;width:auto;font-family:Arial,sans-serif;font-weight:800;font-style:italic;font-size:clamp(36px,2.1vw,52px);letter-spacing:-.07em;line-height:1}
 #header-logo .eyebre-wordmark sup{font-size:.25em;vertical-align:top;position:relative;top:.1em;left:.2em;font-style:normal;letter-spacing:0}
+#home-hero-title{grid-column:4 / span 5;max-inline-size:24ch;margin-top:.12em;padding-block:.12em .3em;font-size:clamp(26px,2.05vw,44px);line-height:1.25;letter-spacing:-.025em;text-align:left;text-wrap:balance}
+#home-hero-title .eyebre-hero-phrase{display:block}
+html[lang=zh-CN] #home-hero-title{font-size:clamp(26px,1.85vw,40px);line-height:1.35;letter-spacing:.01em}
 #eyebre-language-control{position:absolute;right:calc(100% + .8em);top:0;pointer-events:auto;z-index:12;color:var(--color-black)}
 #eyebre-language-button{display:flex;gap:.65em;align-items:center;justify-content:center;height:3.2em;border-radius:6.25em;background:var(--color-off-white);color:inherit;padding:0 1.2em;font-size:.875em;font-weight:500;cursor:pointer;white-space:nowrap;transition:background-color .3s,color .3s}
 #eyebre-language-button svg{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.5}
@@ -17,5 +21,6 @@
 .eyebre-reference-caption{position:absolute;left:1.5em;bottom:1.5em;z-index:3;color:white;font-family:IBMPlexMono,monospace;font-size:.625em;letter-spacing:.02em;pointer-events:none}
 html[lang=zh-CN] .eyebre-segmented{word-spacing:-.25em}
 html[lang=zh-CN] #home-hero-title,html[lang=zh-CN] #home-reel-desc,html[lang=zh-CN] .home-goal-texts-paragraph{font-family:Aeonik,'PingFang SC','Microsoft YaHei',sans-serif}
-@media(max-width:812px){#header-logo .eyebre-wordmark{width:auto;font-size:1.65em}#eyebre-language-control{right:calc(100% + 5em)}#eyebre-language-button{height:3.2em;padding:0 .95em}.eyebre-reference-caption{font-size:.6em;left:1em;bottom:1em}}
+@media(max-width:812px){#header-logo .eyebre-wordmark{font-size:34px}#home-hero-title{grid-column:1 / span 6;max-inline-size:100%;margin-top:calc(var(--base-padding-y) + var(--header-size) * 2 + 8px);padding-block:0 .25em;font-size:clamp(27px,5.8vw,42px);line-height:1.23}html[lang=zh-CN] #home-hero-title{font-size:clamp(24px,5.1vw,36px);line-height:1.4}#eyebre-language-control{right:calc(100% + 5em)}#eyebre-language-button{height:3.2em;padding:0 .95em}.eyebre-reference-caption{font-size:.6em;left:1em;bottom:1em}}
 @media(max-width:480px){#eyebre-language-button .eyebre-language-label{display:none}#eyebre-language-button{gap:.4em;padding:0 .8em}#eyebre-language-menu{font-size:14px}}
+@media(max-width:380px){#header-logo .eyebre-wordmark{font-size:32px}}

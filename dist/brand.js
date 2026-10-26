@@ -8,20 +8,35 @@
   const isZh = lang === 'zh';
   document.documentElement.lang = isZh ? 'zh-CN' : 'en';
   const t = (en, zh) => isZh ? zh : en;
+  // Closing punctuation belongs to its preceding glyph, so it cannot become
+  // a separate animated word at the beginning of a line.
+  const segmentCjk = value => value.replace(/([\u3400-\u9fff][，。！？；：、）】》”’]*)/gu, '$1 ').trim();
+  const catalogues = [
+    {id:'oryzo_ai', en:'Binoculars', zh:'双筒望远镜', subEn:'Bring distant landscapes closer.', subZh:'让远方风景，近在眼前。', bg:'#1a1411', color:'#ffedd7', shadow:'.9'},
+    {id:'atlas_motion', en:'Astronomical Telescopes', zh:'天文望远镜', subEn:'From lunar detail to distant skies.', subZh:'从月面细节，到浩瀚星空。', bg:'#181818', color:'#FFFDE0', shadow:'.95'},
+    {id:'devin_ai', en:'Monoculars', zh:'单筒望远镜', subEn:'A new perspective on every journey.', subZh:'一个视角，更多发现。', bg:'#121414', color:'#ffffff', shadow:'.9'},
+    {id:'of_the_oak', en:'Riflescopes', zh:'瞄准镜', subEn:'A clear view of the details that matter.', subZh:'聚焦目标，看清每一处细节。', bg:'#111a13', color:'#d9f3de', shadow:'.9'},
+    {id:'everswap', en:'Spotting Scopes', zh:'观鸟镜', subEn:'A closer view of life in the wild.', subZh:'静观自然，捕捉灵动瞬间。', bg:'#E3E3F8', color:'#000', shadow:'.95'},
+    {id:'porsche_dream_machine', en:'Rangefinders', zh:'测距仪', subEn:'Put distance into perspective.', subZh:'丈量远近，让视野更有尺度。', bg:'#EFD5D3', color:'#000000', shadow:'.95'},
+    {id:'synthetic_human', en:'Night Vision', zh:'夜视仪', subEn:'Keep exploring after dusk.', subZh:'当夜幕降临，探索仍在继续。', bg:'#9d8aff', color:'#ffffff', shadow:'.95'},
+    {id:'spatial_fusion', en:'Thermal Imaging', zh:'热成像', subEn:'Discover a world revealed by heat.', subZh:'感知温度，发现另一种视界。', bg:'#D6C8ED', color:'#000000', shadow:'.95'},
+    {id:'spaace', en:'Microscopes', zh:'显微镜', subEn:'A wider world in the smallest details.', subZh:'微小之中，自有广阔天地。', bg:'#010a16', color:'#ffece2', shadow:'.85'},
+    {id:'ddd_2024', en:'Mounts & Clamps', zh:'支架&夹具', subEn:'A steady foundation for every view.', subZh:'稳住视角，让观察从容展开。', bg:'#261c46', color:'#ffffff', shadow:'.95'},
+  ];
   const text = (selector, value, segment = false) => {
     document.querySelectorAll(selector).forEach(el => {
       if (isZh && segment) {
         el.setAttribute('aria-label', value);
         // Original SplitType animates whitespace-separated words. Segment CJK
         // characters before its initial measurement so translated lines wrap.
-        value = value.replace(/[\u3400-\u9fff]/g, char => char + ' ').trim();
+        value = segmentCjk(value);
         el.classList.add('eyebre-segmented');
       }
       el.textContent = value;
     });
   };
   const values = {
-    '#home-hero-title': ['We bring decades of optical experience to instruments that help you see a bigger world', '数十年光学行业经验，让我们以丰富的光学仪器，带你看见更远的世界'],
+    '#home-hero-title': ['Decades in optics. A world brought closer.', '数十年光学积淀，带你看见更远的世界。'],
     '#home-hero-scroll': ['scroll to explore', '向下探索'],
     '#home-reel-title-line-1': ['Closer Views,', '让细节更近，'],
     '#home-reel-title-line-2': ['Bigger Worlds', '让世界更大'],
@@ -52,6 +67,12 @@
   };
   const segmented = new Set(['#home-hero-title','#home-hero-scroll','#home-reel-desc','#home-goal-title','#end-section-subtitle-text']);
   for (const [selector, variants] of Object.entries(values)) text(selector, variants[isZh ? 1 : 0], segmented.has(selector));
+  const heroTitle = document.getElementById('home-hero-title');
+  if(heroTitle){
+    const phrases=isZh?['数十年光学积淀，','带你看见更远的世界。']:['Decades in optics.','A world brought closer.'];
+    heroTitle.setAttribute('aria-label',phrases.join(isZh?'':' '));
+    heroTitle.replaceChildren(...phrases.map(phrase=>{const span=document.createElement('span');span.className='eyebre-hero-phrase';span.textContent=isZh?segmentCjk(phrase):phrase;return span;}));
+  }
   const paragraphs = document.querySelectorAll('.home-goal-texts-paragraph');
   if (paragraphs[0]) {
     text('.home-goal-texts-paragraph:nth-child(1)', t('A bird on a distant branch. A city filled with human stories. Light travelling across the night sky. We believe that each new discovery begins with the desire to see a little more — and a new perspective brings the world a little closer.', '远处枝头的一只鸟，城市街角的一个故事，穿越夜空而来的星光。每一次新的发现，都始于想看得更清楚一点的好奇心。我们相信，每一个新的视角，都能让世界更近一点。'), true);
@@ -111,30 +132,37 @@
 
   // Preserve all reference card DOM and hover shaders until catalogues are supplied.
   document.querySelectorAll('.project-item').forEach((card,i) => {
+    const catalogue=catalogues[i];
+    if(!catalogue){card.remove();return;}
     const title=card.querySelector('.project-item-line-2-inner');
-    if(title)title.textContent=t(`Product catalogue ${String(i+1).padStart(2,'0')}`,`产品图册 ${String(i+1).padStart(2,'0')}`);
-    const meta=card.querySelector('.project-item-line-1');if(meta)meta.textContent=t('reference visual • catalogue to follow','参考画面 • 正式图册待替换');
-    card.setAttribute('aria-label',t(`Product catalogue ${i+1}, reference preview`,`产品图册 ${i+1}，参考预览`));
+    if(title)title.textContent=t(catalogue.en,catalogue.zh);
+    const meta=card.querySelector('.project-item-line-1');if(meta)meta.textContent=t(catalogue.subEn,catalogue.subZh);
+    card.setAttribute('aria-label',t(catalogue.en,catalogue.zh));
   });
   // Keep the reference card-to-detail zoom transition. Only its copy changes.
   window.EyebreAdaptFetchedPage=(doc,path)=>{
     const pageTitle=doc.getElementById('project-details-title');
     if(!pageTitle)return;
-    pageTitle.textContent=t('Product Catalogue','产品图册');
+    const catalogue=catalogues.find(item=>item.id===path.split('/').filter(Boolean).at(-1));
+    const next=catalogue?catalogues[(catalogues.indexOf(catalogue)+1)%catalogues.length]:catalogues[0];
+    pageTitle.textContent=catalogue?t(catalogue.en,catalogue.zh):t('Product Catalogue','产品图册');
     const description=doc.getElementById('project-details-desc');
     if(description){
       description.textContent='';
-      for(const content of [t('This catalogue space is reserved for Eyebre optical products. The reference imagery and motion remain in place while our product catalogue selection is being prepared.','此处为 Eyebre 光学产品图册预留区域。正式图册内容尚待确定，目前保留参考画面与原有动态效果。'),t('For information about binoculars, monoculars, astronomical telescopes, riflescopes, night vision, thermal imaging or microscopes, please contact our team.','如需了解双筒望远镜、单筒望远镜、天文望远镜、瞄准镜、夜视仪与热成像、显微镜等产品，欢迎联系我们。')]){const paragraph=doc.createElement('p');paragraph.textContent=content;description.append(paragraph);}
+      for(const content of [catalogue?t(catalogue.subEn,catalogue.subZh):'',t('Explore the Eyebre optical range. Final product imagery and catalogue pages will be added here. Please contact our team for product information.','探索 Eyebre 光学产品系列。正式产品图片与图册页面将陆续加入，欢迎联系我们了解产品信息。')].filter(Boolean)){const paragraph=doc.createElement('p');paragraph.textContent=content;description.append(paragraph);}
     }
     doc.querySelectorAll('#project-details-launch-cta,#project-details-launch-cta-mobile,#project-details-side-list-links a').forEach(el=>{el.href='tel:+8613906893397';el.removeAttribute('target');});
     doc.querySelectorAll('#project-details-launch-cta-text,#project-details-launch-cta-mobile-text').forEach(el=>el.textContent=t('Contact Eyebre','联系 Eyebre'));
     doc.querySelectorAll('#project-details-side-list-links a').forEach(el=>el.textContent=t('Call +86 139 0689 3397','致电 13906893397'));
     doc.querySelectorAll('#project-details-side-list-services .project-details-side-list-title').forEach(el=>el.textContent=t('Our range','产品系列'));
     doc.querySelectorAll('#project-details-side-list-links .project-details-side-list-title').forEach(el=>el.textContent=t('Enquiries','咨询'));
-    const categories=isZh?['双筒望远镜','单筒望远镜','天文望远镜','瞄准镜','夜视仪与热成像','显微镜']:['Binoculars','Monoculars','Astronomical telescopes','Riflescopes','Night vision & thermal imaging','Microscopes'];
+    const categories=catalogues.map(item=>t(item.en,item.zh));
     doc.querySelectorAll('#project-details-side-list-services .project-details-side-list-item').forEach((el,i)=>el.textContent=categories[i%categories.length]);
     doc.querySelectorAll('#project-details-preview .project-item-line-2-inner').forEach(el=>el.textContent=t('Next Catalogue','下一本图册'));
-    doc.querySelectorAll('#project-details-preview-title').forEach(el=>el.textContent=t('Explore More','探索更多'));
+    const preview=doc.getElementById('project-details-preview');
+    if(preview)Object.assign(preview.dataset,{nextId:next.id,nextColorBg:next.bg,nextColorText:next.color,nextShadow:next.shadow});
+    doc.querySelectorAll('#project-details-preview-title').forEach(el=>el.textContent=t(next.en,next.zh));
+    doc.querySelectorAll('#project-details-preview-footer-text').forEach(el=>el.textContent=t('NEXT CATALOGUE','下一本图册'));
     return t('Eyebre — Product Catalogue Preview','Eyebre — 产品图册预览');
   };
   const detailPageTitle=window.EyebreAdaptFetchedPage(document,location.pathname);
