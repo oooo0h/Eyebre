@@ -5,6 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "node server.mjs",
-    "check": "node --check dist/brand.js && node --check dist/desktop-intro.js && node --check dist/runtime-copy.js && node --check dist/catalogue-reader.js && node --check dist/catalogue-preview.js && node --check dist/_astro/hoisted.CUO_IjfL.js && node --check server.mjs"
+    "check": "node --check dist/brand.js && node --check dist/desktop-intro.js && node --check dist/runtime-copy.js && node --check dist/catalogue-reader.js && node --check dist/catalogue-preview.js && node --check dist/catalogue-gestures.js && node --check dist/_astro/hoisted.CUO_IjfL.js && node --check server.mjs && node scripts/check-catalogue-gestures.cjs"
   }
 }

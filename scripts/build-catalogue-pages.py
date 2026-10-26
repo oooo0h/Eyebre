@@ -22,7 +22,7 @@ template=(ROOT/'dist/assets/vendor/pdfjs-viewer/web/viewer.html').read_text(enco
 template=template.replace('href="locale/locale.json"',f'href="{VENDOR}/web/locale/locale.json"')
 template=template.replace('<script src="../build/pdf.mjs" type="module"></script>', '')
 template=template.replace('<link rel="stylesheet" href="viewer.css" />', '')
-template=template.replace('<script src="viewer.mjs" type="module"></script>', '<link rel="stylesheet" href="/catalogue-preview.css?v=2" />\n<script src="/catalogue-preview.js?v=2"></script>')
+template=template.replace('<script src="viewer.mjs" type="module"></script>', '<link rel="stylesheet" href="/catalogue-preview.css?v=3" />\n<script src="/catalogue-gestures.js?v=3"></script>\n<script src="/catalogue-preview.js?v=3"></script>')
 template=template.replace('width=device-width, initial-scale=1, maximum-scale=1','width=device-width, initial-scale=1, viewport-fit=cover')
 template=template.replace('<body tabindex="0">','<body tabindex="0" data-catalogue="{SLUG}" data-title-en="{EN}" data-title-zh="{ZH}">\n<a id="catalogue-preview-back" href="/#home-featured">← Back</a>\n<div id="eyebre-preview-status" role="status" aria-live="polite">Opening catalogue…</div>\n<noscript>Enable JavaScript to preview this catalogue online.</noscript>')
 for slug,en,zh in books:
