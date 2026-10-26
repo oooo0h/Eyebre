@@ -14,6 +14,19 @@ export function setupDesktopIntro(lockup) {
   let hasPlayed = false;
   let loading;
   let generation = 0;
+  const content = document.getElementById('page-container');
+
+  function syncScroll() {
+    // The reference site scrolls by translating its content instead of using
+    // window.scrollY. Apply that same translation to the desktop brand only;
+    // its header layout slot and the right-hand controls stay in place.
+    const onHome = document.getElementById('home-hero') && !document.documentElement.classList.contains('is-project-details-active');
+    const transform = desktop.matches && onHome ? content?.style.transform || '' : '';
+    if (lockup.style.transform !== transform) lockup.style.transform = transform;
+  }
+  const scrollObserver = new MutationObserver(syncScroll);
+  if (content) scrollObserver.observe(content, { attributes: true, attributeFilter: ['style'] });
+  scrollObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   function record(stage) {
     lockup.dataset.introStage = stage;
@@ -94,20 +107,23 @@ export function setupDesktopIntro(lockup) {
   }
 
   function onModeChange() {
+    syncScroll();
     if (!desktop.matches || reducedMotion.matches) showStatic();
     else start();
   }
-  function onReady() { engineReady = true; start(); }
+  function onReady() { engineReady = true; syncScroll(); start(); }
   desktop.addEventListener('change', onModeChange);
   reducedMotion.addEventListener('change', onModeChange);
   window.addEventListener('eyebre-ready', onReady, { once: true });
   window.addEventListener('pagehide', () => {
     generation++;
     timeline?.kill();
+    scrollObserver.disconnect();
     desktop.removeEventListener('change', onModeChange);
     reducedMotion.removeEventListener('change', onModeChange);
     window.removeEventListener('eyebre-ready', onReady);
   }, { once: true });
   if (!desktop.matches || reducedMotion.matches) showStatic();
+  syncScroll();
   start();
 }
