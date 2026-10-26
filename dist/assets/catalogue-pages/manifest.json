@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "astronomical-telescopes",
+    "pageCount": 35,
+    "bytes": 2586526,
+    "firstPageBytes": 194044
+  },
+  {
+    "slug": "binoculars",
+    "pageCount": 171,
+    "bytes": 16771320,
+    "firstPageBytes": 64516
+  },
+  {
+    "slug": "magnifiers",
+    "pageCount": 60,
+    "bytes": 4873934,
+    "firstPageBytes": 100336
+  },
+  {
+    "slug": "microscopes",
+    "pageCount": 21,
+    "bytes": 3152952,
+    "firstPageBytes": 77598
+  },
+  {
+    "slug": "monoculars",
+    "pageCount": 44,
+    "bytes": 4076554,
+    "firstPageBytes": 123600
+  },
+  {
+    "slug": "mounts-clamps",
+    "pageCount": 45,
+    "bytes": 5484288,
+    "firstPageBytes": 110126
+  },
+  {
+    "slug": "night-vision",
+    "pageCount": 105,
+    "bytes": 11464724,
+    "firstPageBytes": 81148
+  },
+  {
+    "slug": "rangefinders",
+    "pageCount": 31,
+    "bytes": 2914836,
+    "firstPageBytes": 59020
+  },
+  {
+    "slug": "riflescopes",
+    "pageCount": 91,
+    "bytes": 4515078,
+    "firstPageBytes": 76156
+  },
+  {
+    "slug": "spotting-scopes",
+    "pageCount": 30,
+    "bytes": 2958660,
+    "firstPageBytes": 43152
+  },
+  {
+    "slug": "thermal-en",
+    "pageCount": 48,
+    "bytes": 5065570,
+    "firstPageBytes": 135580
+  },
+  {
+    "slug": "thermal-zh",
+    "pageCount": 38,
+    "bytes": 3814420,
+    "firstPageBytes": 119966
+  }
+]
