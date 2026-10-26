@@ -23,6 +23,16 @@
     {id:'spaace', en:'Microscopes', zh:'显微镜', subEn:'A wider world in the smallest details.', subZh:'微小之中，自有广阔天地。', bg:'#010a16', color:'#ffece2', shadow:'.85'},
     {id:'ddd_2024', en:'Mounts & Clamps', zh:'支架&夹具', subEn:'A steady foundation for every view.', subZh:'稳住视角，让观察从容展开。', bg:'#261c46', color:'#ffffff', shadow:'.95'},
   ];
+  const catalogueFiles = ['binoculars','astronomical-telescopes','monoculars','riflescopes','spotting-scopes','rangefinders','night-vision','thermal','microscopes','mounts-clamps'];
+  catalogues.forEach((catalogue,index)=>catalogue.pdf=catalogueFiles[index]);
+  function updateCatalogueLink(card,catalogue){
+    const filename=catalogue.pdf==='thermal'?`thermal-${lang}`:catalogue.pdf;
+    card.href=`/assets/catalogues/${filename}.pdf`;
+    card.dataset.linkType='external';
+    card.dataset.eyebreCatalogue=catalogue.id;
+    card.target='_blank';
+    card.rel='noopener';
+  }
   const text = (selector, value, segment = false) => {
     const home=window.EyebreRuntime?.getHomeRoot?.();
     const elements=new Set([...document.querySelectorAll(selector),...(home&&!home.isConnected?[...home.querySelectorAll(selector)]:[])]);
@@ -157,22 +167,15 @@
     if(title)title.textContent=t(catalogue.en,catalogue.zh);
     const meta=card.querySelector('.project-item-line-1');if(meta)meta.textContent=t(catalogue.subEn,catalogue.subZh);
     card.setAttribute('aria-label',t(catalogue.en,catalogue.zh));
+    updateCatalogueLink(card,catalogue);
   });
-  // Keep the reference card-to-detail zoom transition. Only its copy changes.
+  // Keep legacy detail URLs readable; homepage catalogue cards open the PDF directly.
   window.EyebreAdaptFetchedPage=(doc,path)=>{
     const pageTitle=doc.getElementById('project-details-title');
     if(!pageTitle)return;
     const catalogue=catalogues.find(item=>item.id===path.split('/').filter(Boolean).at(-1));
     const next=catalogue?catalogues[(catalogues.indexOf(catalogue)+1)%catalogues.length]:catalogues[0];
     pageTitle.textContent=catalogue?t(catalogue.en,catalogue.zh):t('Product Catalogue','产品图册');
-    if(catalogue){
-      const mediaItems=[...doc.querySelectorAll('.project-details-item')];
-      if(mediaItems.length){
-        const cover=doc.createElement('div');cover.className='project-details-item is-image';
-        Object.assign(cover.dataset,{width:'1200',height:'750',type:'image',filename:`${location.origin}/assets/projects/${catalogue.id}/home`});
-        mediaItems[0].before(cover);mediaItems.forEach(el=>el.remove());
-      }
-    }
     const description=doc.getElementById('project-details-desc');
     if(description){
       description.textContent='';
@@ -241,7 +244,7 @@
     document.querySelectorAll('.footer-address-line').forEach((el,i)=>el.textContent=(isZh?['浙江胤远光学','仪器有限公司','中国 · 浙江','品牌 Eyebre']:['Zhejiang Yinyuan','Optical Instruments','Zhejiang, China','Eyebre'])[i]);
     document.querySelectorAll('.footer-socials-text').forEach((el,i)=>el.textContent=(isZh?['双筒望远镜','天文望远镜','显微镜']:['Binoculars','Astronomy','Microscopy'])[i]);
     document.querySelectorAll('#header-menu-newsletter-title>div,.footer-newsletter-line').forEach((el,i)=>el.textContent=(isZh?['了解更多','光学产品']:['Talk to our','optical team'])[i%2]);
-    home.querySelectorAll('.project-item').forEach((card,i)=>{const c=catalogues[i];if(!c)return;card.querySelector('.project-item-line-2-inner').textContent=t(c.en,c.zh);card.querySelector('.project-item-line-1').textContent=t(c.subEn,c.subZh);card.setAttribute('aria-label',t(c.en,c.zh));});
+    home.querySelectorAll('.project-item').forEach((card,i)=>{const c=catalogues[i];if(!c)return;card.querySelector('.project-item-line-2-inner').textContent=t(c.en,c.zh);card.querySelector('.project-item-line-1').textContent=t(c.subEn,c.subZh);card.setAttribute('aria-label',t(c.en,c.zh));updateCatalogueLink(card,c);});
     logo?.setAttribute('aria-label',t('Eyebre home','Eyebre 首页'));
     languageButton.querySelector('small').textContent=isZh?'中':'EN';
     control.querySelectorAll('[data-eyebre-lang]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.eyebreLang===lang)));
@@ -255,5 +258,5 @@
     window.dispatchEvent(new CustomEvent('eyebre-language-change',{detail:{language:lang}}));
   }
   const readerStyles=document.createElement('link');readerStyles.rel='stylesheet';readerStyles.href='/catalogue-reader.css';document.head.append(readerStyles);
-  import('./catalogue-reader.js').then(({createCatalogueReader})=>createCatalogueReader(catalogues,()=>lang,applyLanguage)).catch(error=>console.warn('Catalogue reader:',error.message));
+  import('./catalogue-reader.js').then(({createCatalogueReader})=>createCatalogueReader(catalogues,()=>lang)).catch(error=>console.warn('Catalogue reader:',error.message));
 })();
