@@ -68,10 +68,10 @@
   const segmented = new Set(['#home-hero-title','#home-hero-scroll','#home-reel-desc','#home-goal-title','#end-section-subtitle-text']);
   for (const [selector, variants] of Object.entries(values)) text(selector, variants[isZh ? 1 : 0], segmented.has(selector));
   const heroTitle = document.getElementById('home-hero-title');
+  const heroPhrases=isZh?['数十年光学积淀，','带你看见更远的世界。']:['Decades in optics.','A world brought closer.'];
   if(heroTitle){
-    const phrases=isZh?['数十年光学积淀，','带你看见更远的世界。']:['Decades in optics.','A world brought closer.'];
-    heroTitle.setAttribute('aria-label',phrases.join(isZh?'':' '));
-    heroTitle.replaceChildren(...phrases.map(phrase=>{const span=document.createElement('span');span.className='eyebre-hero-phrase';span.textContent=isZh?segmentCjk(phrase):phrase;return span;}));
+    heroTitle.setAttribute('aria-label',heroPhrases.join(isZh?'':' '));
+    heroTitle.replaceChildren(...heroPhrases.map(phrase=>{const span=document.createElement('span');span.className='eyebre-hero-phrase';span.textContent=isZh?segmentCjk(phrase):phrase;return span;}));
   }
   const paragraphs = document.querySelectorAll('.home-goal-texts-paragraph');
   if (paragraphs[0]) {
@@ -97,6 +97,23 @@
   document.querySelectorAll('link[rel="manifest"],link[rel="sitemap"]').forEach(el => el.remove());
   const logo = document.getElementById('header-logo');
   if (logo) { logo.innerHTML = '<span class="eyebre-wordmark">Eyebre<sup>®</sup></span>'; logo.setAttribute('aria-label', t('Eyebre home', 'Eyebre 首页')); }
+  if(logo){
+    // Keep the measured H1 inside the original scene. The desktop header gets
+    // a visual copy so its fixed brand lockup can animate independently.
+    const lockup=document.createElement('div');lockup.id='eyebre-desktop-lockup';
+    logo.before(lockup);lockup.append(logo);
+    const logoWindow=document.createElement('span');logoWindow.className='eyebre-logo-window';
+    logoWindow.append(logo.querySelector('.eyebre-wordmark'));logo.replaceChildren(logoWindow);
+    const divider=document.createElement('span');divider.id='eyebre-brand-divider';divider.setAttribute('aria-hidden','true');
+    divider.innerHTML='<span class="eyebre-divider-fill"></span><span class="eyebre-divider-flow"></span>';
+    const copyWindow=document.createElement('div');copyWindow.id='eyebre-desktop-copy';copyWindow.setAttribute('aria-hidden','true');
+    const copyInner=document.createElement('div');copyInner.className='eyebre-desktop-copy-inner';
+    heroPhrases.forEach(phrase=>{const line=document.createElement('span');line.textContent=phrase;copyInner.append(line);});
+    copyWindow.append(copyInner);lockup.append(divider,copyWindow);
+    document.documentElement.classList.add('eyebre-brand-lockup-ready');
+    if(heroTitle&&matchMedia('(min-width: 1024px)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches)lockup.classList.add('eyebre-intro-pending');
+    import('./desktop-intro.js').then(({setupDesktopIntro})=>setupDesktopIntro(lockup)).catch(error=>{lockup.classList.remove('eyebre-intro-pending');console.warn('Using static desktop branding:',error.message);});
+  }
   document.getElementById('header-right-menu-btn')?.setAttribute('aria-label', t('Menu', '菜单'));
   document.getElementById('home-reel-video-watch-btn')?.setAttribute('aria-label', t('Play reference film', '播放参考影片'));
   document.querySelectorAll('#footer-newsletter-input-arrow,#header-menu-newsletter-input-arrow').forEach(el => el.setAttribute('aria-label', t('Call Eyebre', '电话联系 Eyebre')));

@@ -5,6 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "node server.mjs",
-    "check": "node --check dist/brand.js && node --check dist/_astro/hoisted.CUO_IjfL.js && node --check server.mjs"
+    "check": "node --check dist/brand.js && node --check dist/desktop-intro.js && node --check dist/_astro/hoisted.CUO_IjfL.js && node --check server.mjs"
   }
 }
