@@ -26,8 +26,7 @@
   const catalogueFiles = ['binoculars','astronomical-telescopes','monoculars','riflescopes','spotting-scopes','rangefinders','night-vision','thermal','microscopes','mounts-clamps'];
   catalogues.forEach((catalogue,index)=>catalogue.pdf=catalogueFiles[index]);
   function updateCatalogueLink(card,catalogue){
-    const filename=catalogue.pdf==='thermal'?`thermal-${lang}`:catalogue.pdf;
-    card.href=`/assets/catalogues/${filename}.pdf`;
+    card.href=`/catalogues/${catalogue.pdf}/?lang=${lang}`;
     card.dataset.linkType='external';
     card.dataset.eyebreCatalogue=catalogue.id;
     card.target='_blank';
@@ -220,7 +219,8 @@
   },true);
   window.addEventListener('eyebre-ready',()=>{
     const previous=Number(stored(sessionStorage,'eyebre-scroll'));
-    if(Number.isFinite(previous)&&previous>0)window.EyebreRuntime?.restoreScroll(previous);
+    if(location.hash==='#home-featured')window.EyebreRuntime?.scrollTo('home-featured');
+    else if(Number.isFinite(previous)&&previous>0)window.EyebreRuntime?.restoreScroll(previous);
     try{sessionStorage.removeItem('eyebre-scroll');}catch{}
   },{once:true});
 

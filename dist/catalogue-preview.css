@@ -1,0 +1,11 @@
+/* Eyebre: quiet controls, full reading area, and the requested corner return. */
+:root{color-scheme:dark;--body-bg-color:#303030;--toolbar-bg-color:#383838;--toolbar-border-color:#4b4b4b}
+#catalogue-preview-back{position:fixed;left:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:100000;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 14px;border:1px solid #666;border-radius:5px;background:#3b3b3b;color:#ddd;text-decoration:none;font:12px/1.4 Arial,'Microsoft YaHei',sans-serif}
+#catalogue-preview-back:hover{background:#505050;color:#fff}
+#catalogue-preview-back:focus-visible{outline:2px solid #ccc;outline-offset:2px}
+#viewerContainer{padding-bottom:64px;overscroll-behavior:contain}
+#editorModeButtons,#editorModeSeparator,#secondaryOpenFile,#secondaryOpenFileSeparator{display:none!important}
+#eyebre-preview-status{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);z-index:1000;max-width:85vw;padding:16px 20px;border-radius:6px;background:#383838;color:#ddd;text-align:center;font:14px/1.6 Arial,'Microsoft YaHei',sans-serif}
+#eyebre-preview-status[hidden]{display:none}
+#eyebre-preview-status a,#eyebre-preview-status button{display:inline-block;margin:8px;padding:8px;color:#fff;background:#505050;border:1px solid #777;border-radius:4px;text-decoration:none;cursor:pointer}
+@media(max-width:700px){#catalogue-preview-back{left:12px;bottom:max(12px,env(safe-area-inset-bottom));min-height:44px}#toolbarViewer .toolbarButton{min-width:36px;min-height:36px}#viewerContainer{padding-bottom:72px}}
