@@ -1,0 +1,7 @@
+.git
+.tools
+qa
+reference
+node_modules
+*.zip
+*.tar.gz
