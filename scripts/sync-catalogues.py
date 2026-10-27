@@ -217,7 +217,7 @@ def prepare(config, stamps, adopt=False):
 
 def command(args, capture=False, timeout=180):
     result=subprocess.run(args,cwd=ROOT,text=True,encoding='utf-8',errors='replace',
-                          stdout=subprocess.PIPE if capture else None,stderr=subprocess.PIPE if capture else None,timeout=timeout)
+                          stdout=subprocess.PIPE if capture else None,stderr=subprocess.PIPE if capture else subprocess.STDOUT,timeout=timeout)
     if result.returncode:
         raise RuntimeError(f'Command failed ({result.returncode}): {args[0]} {args[1:3]}\n{result.stderr or ""}')
     return result.stdout.rstrip('\r\n') if capture else ''
