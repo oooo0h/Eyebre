@@ -2,7 +2,15 @@
 
 沿用参考站的文字层级、画幅、背景线条、3D 场景、鼠标互动、平滑滚动和卡片缩放过渡，局部替换为 Eyebre 的公司内容。
 
-源码与网页资源通过 GitHub 管理，可在本地或帽子云等静态托管平台运行。项目不需要构建服务器端程序。
+源码与网页资源通过 GitHub 管理，通过 GitHub Pages 发布。项目不需要构建服务器端程序。
+
+## GitHub Pages 发布
+
+网站地址：https://oooo0h.github.io/Eyebre/
+
+推送到 `main` 后，`.github/workflows/pages.yml` 自动检查脚本与阅读手势，生成 `_site/` 并部署。`npm run build:pages` 将 `dist/` 复制为发布产物，适配 `/Eyebre/` 下的路由、资源及画册地址，不修改本地预览源码；`node scripts/check-pages.mjs` 检查路径与路由。若更换仓库名或使用自定义域名，工作流根据 Pages 的 `base_path` 自动适配。
+
+例如双筒画册地址为 `https://oooo0h.github.io/Eyebre/catalogues/binoculars/?lang=zh&view=light#page=4`。后续分享的画册链接均需包含 `/Eyebre/` 前缀。
 
 ## 运行
 
@@ -63,7 +71,7 @@
 | 支架&夹具 | `/catalogues/mounts-clamps/` |
 | 放大镜 | `/catalogues/magnifiers/` |
 
-帽子云构建根目录留空，构建命令 `npm run check`，输出目录 `dist`。阅读器与依赖已提交，不需要构建时下载第三方服务。
+阅读器与依赖已提交，发布时不需要重新生成画册预览图。
 
 ## 手机兼容与加载故障
 
