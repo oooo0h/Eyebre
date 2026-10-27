@@ -10,7 +10,9 @@ def digest(doc):
  h=hashlib.sha256()
  for page in doc:h.update(page.get_text().encode('utf-8'))
  return h.hexdigest()
-for meta in QA.glob('*.json'):
+active=json.loads((OUT/'manifest.json').read_text(encoding='utf-8'))
+metas=[QA/(Path(record['filename']).stem+'.json') for record in active]
+for meta in metas:
  record=json.loads(meta.read_text(encoding='utf-8'));path=OUT/record['filename'];doc=pymupdf.open(path)
  before=digest(doc);pages=len(doc);removed=0
  for xref in range(1,doc.xref_length()):
@@ -24,5 +26,5 @@ for meta in QA.glob('*.json'):
  if record['bytes']<24*1024*1024:record.pop('sizeWarning',None)
  meta.write_text(json.dumps(record,ensure_ascii=False,indent=2),encoding='utf-8')
  print(json.dumps({'file':path.name,'MiB':round(record['bytes']/1024**2,2),'privateDataKeysRemoved':removed},ensure_ascii=False),flush=True)
-records=[json.loads(p.read_text(encoding='utf-8')) for p in QA.glob('*.json')]
+records=[json.loads(p.read_text(encoding='utf-8')) for p in metas]
 (OUT/'manifest.json').write_text(json.dumps(records,ensure_ascii=False,indent=2),encoding='utf-8')

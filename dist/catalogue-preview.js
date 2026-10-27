@@ -4,6 +4,7 @@
   try{saved=localStorage.getItem('eyebre-language')||'';}catch(ignore){}
   var language=(url.searchParams.get('lang')||saved||navigator.language||'en').indexOf('zh')===0?'zh':'en';
   var zh=language==='zh',asset='/assets/vendor/pdfjs-viewer/';
+  var revision='3';
   var configured=false,lightStarted=false,rendered=false,timer,slug,file,title;
   document.documentElement.lang=zh?'zh-CN':'en';
   if(url.searchParams.has('file')){url.searchParams.delete('file');history.replaceState(history.state,'',url.href);}
@@ -11,6 +12,7 @@
   function status(){return document.getElementById('eyebre-preview-status');}
   function backMessage(){parent.postMessage({type:'eyebre-close-catalogue'},location.origin);}
   function prepare(){
+    revision=document.body.getAttribute('data-revision')||'3';
     slug=document.body.getAttribute('data-catalogue');file=slug==='thermal'?'thermal-'+language:slug;
     title=document.body.getAttribute(zh?'data-title-zh':'data-title-en');document.title=title+' | Eyebre';
     var back=document.getElementById('catalogue-preview-back');
@@ -29,7 +31,7 @@
     try{if(window.PDFViewerApplication&&(window.PDFViewerApplication.pdfLoadingTask||window.PDFViewerApplication.pdfDocument))window.PDFViewerApplication.close().catch(function(){});}catch(ignore){}
     document.documentElement.className+=' eyebre-light-view';document.documentElement.setAttribute('data-preview-mode','light');
     status().textContent=text('Preparing pages…','正在准备画册页面…');status().hidden=false;
-    var xhr=new XMLHttpRequest();xhr.open('GET','/assets/catalogue-pages/'+file+'/index.json?v=3',true);xhr.timeout=25000;
+    var xhr=new XMLHttpRequest();xhr.open('GET','/assets/catalogue-pages/'+file+'/index.json?v='+revision,true);xhr.timeout=25000;
     xhr.onload=function(){
       if(xhr.status<200||xhr.status>=300){failure(text('Unable to load the page list.','画册页面暂时无法加载。'));return;}
       try{buildLightReader(JSON.parse(xhr.responseText));}catch(error){failure(text('Unable to prepare the catalogue.','暂时无法打开画册。'));}
@@ -55,7 +57,7 @@
       paper.appendChild(image);paper.appendChild(placeholder);figure.appendChild(paper);list.appendChild(figure);
       figures.push({figure:figure,image:image,placeholder:placeholder,loaded:false,pending:false,page:page,paper:paper});
     });
-    function pageUrl(n){return '/assets/catalogue-pages/'+file+'/'+('0000'+n).slice(-4)+'.webp';}
+    function pageUrl(n){return '/assets/catalogue-pages/'+file+'/'+('0000'+n).slice(-4)+'.webp?v='+(book.revision||revision);}
     function load(n){
       var item=figures[n-1];if(!item||item.loaded||item.pending)return;
       active[n]=true;item.pending=true;item.placeholder.hidden=false;item.placeholder.onclick=null;item.placeholder.textContent=text('Loading page ','正在加载第 ')+n+(zh?' 页…':'…');item.image.hidden=false;
@@ -101,7 +103,7 @@
       item.hdImage.hidden=true;
       item.hdImage.onload=function(){if(hdActive!==n)return;item.hdPending=false;item.hdLoaded=true;item.hdImage.hidden=false;document.documentElement.setAttribute('data-hd-page',String(n));};
       item.hdImage.onerror=function(){item.hdPending=false;item.hdImage.hidden=true;};
-      item.hdImage.src='/assets/catalogue-pages/'+file+'/hd/'+('0000'+n).slice(-4)+'.webp?v='+item.page.hd.bytes;
+      item.hdImage.src='/assets/catalogue-pages/'+file+'/hd/'+('0000'+n).slice(-4)+'.webp?v='+(book.revision||revision);
     }
     function queueHD(){clearTimeout(hdTimer);hdTimer=setTimeout(syncHD,180);}
     function captureAnchor(point){
@@ -131,7 +133,7 @@
     configured=true;
     var options=window.PDFViewerApplicationOptions,app=window.PDFViewerApplication;
     var originalProgress=app.progress;app.progress=function(percent){originalProgress.call(app,percent);var label=document.getElementById('pdf-load-progress');if(label&&!lightStarted&&!rendered&&typeof percent==='number'&&isFinite(percent))label.textContent=text('Opening catalogue · ','正在打开画册 · ')+Math.min(99,Math.max(0,Math.floor(percent)))+'%';};
-    options.setAll({defaultUrl:'/assets/catalogues/'+file+'.pdf',defaultZoomValue:'page-width',viewOnLoad:1,disablePreferences:true,disableHistory:false,viewerCssTheme:2,localeProperties:{lang:zh?'zh-CN':'en-US'},workerSrc:asset+'build/pdf.worker.mjs',cMapUrl:asset+'web/cmaps/',standardFontDataUrl:asset+'web/standard_fonts/',wasmUrl:asset+'web/wasm/',iccUrl:asset+'web/iccs/',enableScripting:false,enableAutoLinking:false,enableWebGPU:false,annotationEditorMode:-1,maxCanvasPixels:8388608,disableAutoFetch:true,disableStream:true});
+    options.setAll({defaultUrl:'/assets/catalogues/'+file+'.pdf?v='+revision,defaultZoomValue:'page-width',viewOnLoad:1,disablePreferences:true,disableHistory:false,viewerCssTheme:2,localeProperties:{lang:zh?'zh-CN':'en-US'},workerSrc:asset+'build/pdf.worker.mjs',cMapUrl:asset+'web/cmaps/',standardFontDataUrl:asset+'web/standard_fonts/',wasmUrl:asset+'web/wasm/',iccUrl:asset+'web/iccs/',enableScripting:false,enableAutoLinking:false,enableWebGPU:false,annotationEditorMode:-1,maxCanvasPixels:8388608,disableAutoFetch:true,disableStream:true});
     app.initializedPromise.then(function(){
       document.getElementById('pageNumber').addEventListener('keydown',function(event){if(event.key==='Enter'){event.preventDefault();app.pdfLinkService.goToPage(event.currentTarget.value);document.getElementById('viewerContainer').focus({preventScroll:true});}});
       app.eventBus.on('pagerendered',function(){if(lightStarted)return;rendered=true;clearTimeout(timer);status().hidden=true;document.documentElement.setAttribute('data-pdf-rendered','true');document.title=title+' | Eyebre';});

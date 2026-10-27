@@ -2,19 +2,17 @@
   {
     "filename": "binoculars.pdf",
     "original": "EYEBRE图册-双筒望远镜..pdf",
-    "pageCount": 171,
-    "bytes": 23362047,
-    "originalBytes": 265878767,
+    "pageCount": 174,
+    "bytes": 23645660,
+    "originalBytes": 291063669,
+    "sourceSha256": "6fab2d87e0b6fa6b13eebc9efd87a41763aae0e6dfffcb2f619a2376d292be64",
+    "revision": "6fab2d87e0b6fa6b",
     "textPreserved": true,
     "allPagesRenderable": true,
     "settings": {
       "maxRasterEdge": 1600,
-      "jpegQuality": 70,
-      "opaqueImagesReplaced": 176
-    },
-    "removedPrivateEditingData": true,
-    "fontSubsets": true,
-    "cover": "cover-binoculars.webp"
+      "jpegQuality": 70
+    }
   },
   {
     "filename": "astronomical-telescopes.pdf",
@@ -31,7 +29,9 @@
     },
     "cover": "cover-astronomical-telescopes.webp",
     "removedPrivateEditingData": false,
-    "fontSubsets": true
+    "fontSubsets": true,
+    "sourceSha256": "af75abf58045aa3d2330b2f7e076c4fd836480ce28c2f23add1b7df97a930820",
+    "revision": "af75abf58045aa3d"
   },
   {
     "filename": "monoculars.pdf",
@@ -48,7 +48,9 @@
     },
     "cover": "cover-monoculars.webp",
     "removedPrivateEditingData": false,
-    "fontSubsets": true
+    "fontSubsets": true,
+    "sourceSha256": "b6669f95f825de9427a89e8553f99fd93c5d2a5362aaaf32548057ade1d10484",
+    "revision": "b6669f95f825de94"
   },
   {
     "filename": "riflescopes.pdf",
@@ -65,7 +67,9 @@
     },
     "cover": "cover-riflescopes.webp",
     "removedPrivateEditingData": false,
-    "fontSubsets": true
+    "fontSubsets": true,
+    "sourceSha256": "6b92a640aea9c0fc4812873af5606f113414bef645627cf0dd4d491fb6fa33d5",
+    "revision": "6b92a640aea9c0fc"
   },
   {
     "filename": "spotting-scopes.pdf",
@@ -82,24 +86,9 @@
     },
     "cover": "cover-spotting-scopes.webp",
     "removedPrivateEditingData": false,
-    "fontSubsets": true
-  },
-  {
-    "filename": "rangefinders.pdf",
-    "original": "测距仪测距模块宣传册.pdf",
-    "pageCount": 31,
-    "bytes": 20413408,
-    "originalBytes": 50299139,
-    "textPreserved": true,
-    "allPagesRenderable": true,
-    "settings": {
-      "dpiThreshold": 180,
-      "dpiTarget": 150,
-      "jpegQuality": 80
-    },
-    "cover": "cover-rangefinders.webp",
-    "removedPrivateEditingData": false,
-    "fontSubsets": true
+    "fontSubsets": true,
+    "sourceSha256": "0dc4a39dc7c266290db5745a5bcf1e64de41e6f212f86370246c5215239867b5",
+    "revision": "0dc4a39dc7c26629"
   },
   {
     "filename": "night-vision.pdf",
@@ -116,7 +105,9 @@
     },
     "removedPrivateEditingData": false,
     "fontSubsets": true,
-    "cover": "cover-night-vision.webp"
+    "cover": "cover-night-vision.webp",
+    "sourceSha256": "05fad98af13715d923eae5b4b4df5cac291fe5d29d0a4c24423c99941ccca636",
+    "revision": "05fad98af13715d9"
   },
   {
     "filename": "thermal-en.pdf",
@@ -133,7 +124,9 @@
     },
     "removedPrivateEditingData": false,
     "fontSubsets": true,
-    "cover": "cover-thermal-en.webp"
+    "cover": "cover-thermal-en.webp",
+    "sourceSha256": "526d7eaf36d1eddf08bc01ae6a2fa99e0085d82b6791619279bbbc6e2222e958",
+    "revision": "526d7eaf36d1eddf"
   },
   {
     "filename": "thermal-zh.pdf",
@@ -150,24 +143,9 @@
     },
     "cover": "cover-thermal-zh.webp",
     "removedPrivateEditingData": false,
-    "fontSubsets": true
-  },
-  {
-    "filename": "microscopes.pdf",
-    "original": "显微镜产品名录.pdf",
-    "pageCount": 21,
-    "bytes": 19074305,
-    "originalBytes": 30439984,
-    "textPreserved": true,
-    "allPagesRenderable": true,
-    "settings": {
-      "dpiThreshold": 180,
-      "dpiTarget": 150,
-      "jpegQuality": 80
-    },
-    "cover": "cover-microscopes.webp",
-    "removedPrivateEditingData": false,
-    "fontSubsets": true
+    "fontSubsets": true,
+    "sourceSha256": "d66d99e97fa98ce823c3dae681d76b177219655818fe388d013b9cb4691980e2",
+    "revision": "d66d99e97fa98ce8"
   },
   {
     "filename": "mounts-clamps.pdf",
@@ -184,7 +162,9 @@
     },
     "cover": "cover-mounts-clamps.webp",
     "removedPrivateEditingData": false,
-    "fontSubsets": true
+    "fontSubsets": true,
+    "sourceSha256": "9b8d4170141cf701aa0adf0aa32437d93827cc76fc0054b6c46f312280947b10",
+    "revision": "9b8d4170141cf701"
   },
   {
     "filename": "magnifiers.pdf",
@@ -201,6 +181,8 @@
     },
     "cover": "cover-magnifiers.webp",
     "removedPrivateEditingData": false,
-    "fontSubsets": true
+    "fontSubsets": true,
+    "sourceSha256": "9d75ef365cc2d3c477a8fa3ca6b5a07bf164a8241b408d49e848c64ccd6bcfc6",
+    "revision": "9d75ef365cc2d3c4"
   }
 ]

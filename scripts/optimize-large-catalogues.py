@@ -5,6 +5,7 @@ import gc, hashlib, json, sys
 from PIL import Image
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'.tools'))
+from catalogue_sources import source_path
 import pymupdf
 pymupdf.TOOLS.mupdf_display_errors(False);pymupdf.TOOLS.mupdf_display_warnings(False)
 SOURCE=ROOT.parent/'产品画册';OUT=ROOT/'dist/assets/catalogues';QA=ROOT/'qa/catalogue-assets'
@@ -14,7 +15,7 @@ def digest(doc):
  for p in doc:h.update(p.get_text().encode('utf-8'))
  return h.hexdigest()
 for slug in (sys.argv[1:] or MAP):
- original=SOURCE/MAP[slug]
+ original=source_path(slug)
  edge=1600 if slug=='binoculars' else 1800
  quality=70 if slug=='binoculars' else 76
  doc=pymupdf.open(original);text_hash=digest(doc);pages=len(doc);images={}

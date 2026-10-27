@@ -3,6 +3,7 @@ from pathlib import Path
 import json,sys,concurrent.futures
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'.tools'))
+from catalogue_sources import source_path
 import pymupdf
 from PIL import Image
 pymupdf.TOOLS.mupdf_display_errors(False)
@@ -12,7 +13,7 @@ def render_hd(book):
  slug=Path(book['filename']).stem
  folder=ROOT/'dist/assets/catalogue-pages'/slug
  out=folder/'hd';out.mkdir(parents=True,exist_ok=True)
- original=ROOT.parent/'产品画册'/book['original']
+ original=source_path(slug)
  source=original if original.exists() else ROOT/'dist/assets/catalogues'/book['filename']
  meta=json.loads((folder/'index.json').read_text(encoding='utf-8'))
  with pymupdf.open(source) as doc:

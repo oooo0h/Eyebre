@@ -3,6 +3,7 @@ from pathlib import Path
 import argparse, concurrent.futures, hashlib, json, subprocess, sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / '.tools'))
+from catalogue_sources import source_path
 import pymupdf
 pymupdf.TOOLS.mupdf_display_errors(False)
 pymupdf.TOOLS.mupdf_display_warnings(False)
@@ -13,10 +14,10 @@ CATALOGUES = {
  'binoculars':'EYEBRE图册-双筒望远镜..pdf',
  'astronomical-telescopes':'天文望远镜系列画册.pdf',
  'monoculars':'单筒望远镜画册.pdf', 'riflescopes':'瞄准镜画册-最终版本.pdf',
- 'spotting-scopes':'EYEBRE图册-观鸟镜.pdf', 'rangefinders':'测距仪测距模块宣传册.pdf',
+ 'spotting-scopes':'EYEBRE图册-观鸟镜.pdf',
  'night-vision':'Eyebre-夜视仪热成像图册.pdf',
  'thermal-en':'2026热成像 英文.pdf', 'thermal-zh':'2026热成像 中文.pdf',
- 'microscopes':'显微镜产品名录.pdf', 'mounts-clamps':'支架+夹具 画册 最新.pdf',
+ 'mounts-clamps':'支架+夹具 画册 最新.pdf',
  'magnifiers':'放大镜画册.pdf',
 }
 def digest(doc):
@@ -25,7 +26,7 @@ def digest(doc):
  return h.hexdigest()
 def create(slug):
  OUTPUT.mkdir(parents=True,exist_ok=True);QA.mkdir(parents=True,exist_ok=True)
- source=SOURCE/CATALOGUES[slug]; destination=OUTPUT/(slug+'.pdf')
+ source=source_path(slug); destination=OUTPUT/(slug+'.pdf')
  original=pymupdf.open(source); pages=len(original); text_hash=digest(original);original.close()
  settings=None
  for threshold,target,quality in [(180,150,80),(155,130,76),(135,115,74)]:
@@ -39,7 +40,7 @@ def create(slug):
  assert digest(output)==text_hash, f'Text changed: {slug}'
  for page in output:page.get_pixmap(matrix=pymupdf.Matrix(.1,.1),alpha=False)
  output[0].get_pixmap(dpi=90,alpha=False).pil_save(str(OUTPUT/(slug+'-cover.webp')))
- if slug in {'binoculars','thermal-en','thermal-zh','microscopes'}:
+ if slug in {'binoculars','thermal-en','thermal-zh'}:
   original=pymupdf.open(source)
   for i in [0,min(3,pages-1),pages-1]:
    original[i].get_pixmap(dpi=110,alpha=False).save(str(QA/f'{slug}-before-{i+1:03}.png'))

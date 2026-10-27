@@ -4,6 +4,7 @@ import json,sys,hashlib
 from PIL import Image,ImageDraw,ImageChops,ImageStat
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'.tools'))
+from catalogue_sources import source_path
 import pymupdf
 pymupdf.TOOLS.mupdf_display_errors(False)
 pymupdf.TOOLS.mupdf_display_warnings(False)
@@ -16,7 +17,7 @@ def digest(doc):
 results=[]
 for record in records:
  slug=Path(record['filename']).stem
- source=pymupdf.open(ROOT.parent/'产品画册'/record['original'])
+ source=pymupdf.open(source_path(slug))
  final=pymupdf.open(OUT/record['filename'])
  assert len(source)==len(final)==record['pageCount']
  assert digest(source)==digest(final)

@@ -24,11 +24,11 @@
 
 ## 产品画册
 
-主页 10 个分类依次为：双筒望远镜、天文望远镜、单筒望远镜、瞄准镜、观鸟镜、测距仪、夜视仪、热成像、显微镜、支架&夹具。卡片保留参考站原图与鼠标视差。点击后直接在当前页面的全屏层中打开对应网页预览，由自托管的完整 Mozilla PDF.js 阅读器渲染，电脑与手机都可在线阅读，不依赖浏览器的 PDF 插件，不跳转详情页。移除顶部抬头，仅在左下角固定显示返回按钮，关闭后回到原滚动位置。
+主页 9 个分类为：双筒望远镜、天文望远镜、单筒望远镜、瞄准镜、观鸟镜、夜视仪、热成像、放大镜、支架&夹具。热成像有中英文两本，共 10 本源画册。测距仪与显微镜已取消。卡片保留参考站原图与鼠标视差。点击后直接在当前页面的全屏层中打开对应网页预览，由自托管的完整 Mozilla PDF.js 阅读器渲染，电脑与手机都可在线阅读，不依赖浏览器的 PDF 插件，不跳转详情页。移除顶部抬头，仅在左下角固定显示返回按钮，关闭后回到原滚动位置。
 
-桌面端的页码跳转、连续滚动、缩放、查找、缩略图、打印及主动下载使用 PDF.js 完整阅读器。手机默认使用逐页 WebP 轻量预览，支持连续滚动、页码跳转和缩放；无需手机加载 PDF 引擎或解析整本文件。热成像按打开时的当前语言选择中英文版本；界面语言切换不会翻译 PDF 内文。Ctrl/Command 点击或右键可在新标签页打开对应网页预览。放大镜文件仍保留在资源目录中，未添加额外主页分类。
+桌面端的页码跳转、连续滚动、缩放、查找、缩略图、打印及主动下载使用 PDF.js 完整阅读器。手机默认使用逐页 WebP 轻量预览，支持连续滚动、页码跳转和缩放；无需手机加载 PDF 引擎或解析整本文件。热成像按打开时的当前语言选择中英文版本；界面语言切换不会翻译 PDF 内文。Ctrl/Command 点击或右键可在新标签页打开对应网页预览。放大镜已加入主页分类。
 
-`dist/assets/catalogues/` 包含 12 本完整页面的网页阅读版、封面及 `manifest.json`。原始大画册单独保留在本机上层 `产品画册/`，保持不变，不纳入 GitHub 仓库；运行网页所需的完整 PDF 已包含在本项目中。网页阅读版优化了图片与文件体积，保留全部 719 页及可提取文字；适合在线阅读，印刷请使用原稿。目前使用官方 PDF.js 6.4.299 legacy 完整阅读器，自托管在 `dist/assets/vendor/pdfjs-viewer/`，保留其许可证。原稿与网页阅读版 PDF 文件不变。
+`dist/assets/catalogues/` 包含 10 本完整页面的网页阅读版、封面及 `manifest.json`。原始大画册以本机配置的 WeDrive 路径为准，上层 `产品画册/` 仅保留打开原稿的 Windows 快捷方式；运行网页所需的完整 PDF 已包含在本项目中。网页阅读版优化了图片与文件体积，保留全部 670 页及可提取文字；适合在线阅读，印刷请使用原稿。目前使用官方 PDF.js 6.4.299 legacy 完整阅读器，自托管在 `dist/assets/vendor/pdfjs-viewer/`，保留其许可证。原稿与网页阅读版 PDF 文件不变。
 
 ## 文件
 
@@ -62,12 +62,10 @@
 | 单筒望远镜 | `/catalogues/monoculars/` |
 | 瞄准镜 | `/catalogues/riflescopes/` |
 | 观鸟镜 | `/catalogues/spotting-scopes/` |
-| 测距仪 | `/catalogues/rangefinders/` |
 | 夜视仪 | `/catalogues/night-vision/` |
 | 热成像（按界面语言选版本） | `/catalogues/thermal/` |
 | 热成像英文原稿 | `/catalogues/thermal-en/` |
 | 热成像中文原稿 | `/catalogues/thermal-zh/` |
-| 显微镜 | `/catalogues/microscopes/` |
 | 支架&夹具 | `/catalogues/mounts-clamps/` |
 | 放大镜 | `/catalogues/magnifiers/` |
 
@@ -75,7 +73,7 @@
 
 ## 手机兼容与加载故障
 
-手机（含华为 Via / Android WebView）默认进入轻量模式，只请求当前页及邻近页面的预渲染图片；远离视口的图片卸载以控制解码内存。完整 719 页图片在 `dist/assets/catalogue-pages/`，约 67.7 MB；按需下载，双筒首页约 64.5 KB。图片由 `scripts/build-catalogue-images.py` 从现有网页 PDF 渲染，原文件不变。
+手机（含华为 Via / Android WebView）默认进入轻量模式，只请求当前页及邻近页面的预渲染图片；远离视口的图片卸载以控制解码内存。完整 670 页图片在 `dist/assets/catalogue-pages/`，按需下载，双筒首页约 64.5 KB。图片由 `scripts/build-catalogue-images.py` 从现有网页 PDF 渲染，原文件不变。
 
 - `?view=light` 强制轻量预览，适合分享给旧手机浏览器。
 - `?view=pdf` 请求完整 PDF 工具（需浏览器支持）；轻量工具栏的 PDF 按钮可切换。
@@ -87,8 +85,22 @@
 
 轻量模式由阅读器处理双指缩放、单指双向拖动和惯性滚动，缩放围绕手指中心，工具栏可放大至 600%。缩放使用实际内容宽度，放大后可左右浏览，不再依赖浏览器整页缩放。
 
-默认仍读取轻量图；放大至 135% 以上时，只为当前页加载高清图（从本机原始 PDF 生成，最高宽 2600px、长边 3800px，WebP 质量 92）。高清图加载完成前保留原图，缩小或离开该页后释放高清图解码内存。719 张高清图共约 266.7 MB，但不会整册下载。
+默认仍读取轻量图；放大至 135% 以上时，只为当前页加载高清图（从本机原始 PDF 生成，最高宽 2600px、长边 3800px，WebP 质量 92）。高清图加载完成前保留原图，缩小或离开该页后释放高清图解码内存。高清图不会整册下载。
 
 - `dist/catalogue-gestures.js`：兼容旧 Android WebView 的触摸/鼠标手势。
 - `scripts/build-catalogue-hd.py`：生成高清图及逐页元数据，不修改 PDF。
 - `scripts/check-catalogue-gestures.cjs`：双指缩放后继续单指横向拖动、缩放边界及鼠标拖动回归检查，已加入 `npm run check`。
+
+
+## 本机每天 10:00 自动同步画册
+
+- 唯一源文件配置：`.catalogue-sync/config.json`（本机绝对路径，已忽略，不上传 GitHub）。
+- Windows 任务：`Eyebre-Catalogue-Daily-Sync`，每天北京时间 10:00、当前用户已登录时运行；错过时间后尽快补跑。不需要 Codex 打开。
+- 手动运行：双击 `scripts/catalogue-sync.cmd`。窗口实时输出日志；成功或没有变化时自动退出，失败时保留窗口并等待按键。
+- 日志：`.catalogue-sync/logs/`。发布状态和待重试提交：`.catalogue-sync/state.json`。
+- 内容 SHA256 相同不重建，不因单纯修改时间变化而上传。变动时先取稳定快照、重建优化 PDF 及全部 SD/HD 预览、校验页数与文字，再替换、提交、推送并等待 Pages 部署成功。
+- 地址保持原样，已有二维码继续使用；资源按源文件内容版本缓存，避免新 PDF 搭配旧手机预览图。
+- 来源缺失、文件正在保存、无法读取、未提交的本地修改、分支冲突或部署失败时停止并保留日志，不覆盖原稿、不强推、不自动丢弃本地工作。
+- 运行账户使用已有 GitHub CLI 登录，不保存令牌到配置。代理可用时使用本机代理，否则尝试直接联网。运行依赖本机 Python、Node、Git、GitHub CLI 和 `.tools` 中的 PyMuPDF；路径在本机配置中。
+- 重新注册任务与快捷方式：以当前 Windows 用户运行 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-catalogue-task.ps1`。
+- 源文件旧副本中不一致的双筒旧版和已取消的两本画册，保存在 `.catalogue-sync/previous-originals/`；与 WeDrive 一致的重复副本移除。

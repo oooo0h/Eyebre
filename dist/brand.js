@@ -17,13 +17,12 @@
     {id:'devin_ai', en:'Monoculars', zh:'单筒望远镜', subEn:'A new perspective on every journey.', subZh:'一个视角，更多发现。', bg:'#121414', color:'#ffffff', shadow:'.9'},
     {id:'of_the_oak', en:'Riflescopes', zh:'瞄准镜', subEn:'A clear view of the details that matter.', subZh:'聚焦目标，看清每一处细节。', bg:'#111a13', color:'#d9f3de', shadow:'.9'},
     {id:'everswap', en:'Spotting Scopes', zh:'观鸟镜', subEn:'A closer view of life in the wild.', subZh:'静观自然，捕捉灵动瞬间。', bg:'#E3E3F8', color:'#000', shadow:'.95'},
-    {id:'porsche_dream_machine', en:'Rangefinders', zh:'测距仪', subEn:'Put distance into perspective.', subZh:'丈量远近，让视野更有尺度。', bg:'#EFD5D3', color:'#000000', shadow:'.95'},
     {id:'synthetic_human', en:'Night Vision', zh:'夜视仪', subEn:'Keep exploring after dusk.', subZh:'当夜幕降临，探索仍在继续。', bg:'#9d8aff', color:'#ffffff', shadow:'.95'},
     {id:'spatial_fusion', en:'Thermal Imaging', zh:'热成像', subEn:'Discover a world revealed by heat.', subZh:'感知温度，发现另一种视界。', bg:'#D6C8ED', color:'#000000', shadow:'.95'},
-    {id:'spaace', en:'Microscopes', zh:'显微镜', subEn:'A wider world in the smallest details.', subZh:'微小之中，自有广阔天地。', bg:'#010a16', color:'#ffece2', shadow:'.85'},
+    {id:'spaace', en:'Magnifiers', zh:'放大镜', subEn:'A closer look at everyday details.', subZh:'放大细节，发现日常之美。', bg:'#010a16', color:'#ffece2', shadow:'.85'},
     {id:'ddd_2024', en:'Mounts & Clamps', zh:'支架&夹具', subEn:'A steady foundation for every view.', subZh:'稳住视角，让观察从容展开。', bg:'#261c46', color:'#ffffff', shadow:'.95'},
   ];
-  const catalogueFiles = ['binoculars','astronomical-telescopes','monoculars','riflescopes','spotting-scopes','rangefinders','night-vision','thermal','microscopes','mounts-clamps'];
+  const catalogueFiles = ['binoculars','astronomical-telescopes','monoculars','riflescopes','spotting-scopes','night-vision','thermal','magnifiers','mounts-clamps'];
   catalogues.forEach((catalogue,index)=>catalogue.pdf=catalogueFiles[index]);
   function updateCatalogueLink(card,catalogue){
     card.href=`/catalogues/${catalogue.pdf}/?lang=${lang}`;
@@ -51,7 +50,7 @@
     '#home-hero-scroll': ['scroll to explore', '向下探索'],
     '#home-reel-title-line-1': ['Closer Views,', '让细节更近，'],
     '#home-reel-title-line-2': ['Bigger Worlds', '让世界更大'],
-    '#home-reel-desc': ['At Eyebre, decades of experience in the optical industry meet an enduring curiosity about the world. From binoculars and monoculars to astronomical telescopes, riflescopes, night vision, thermal imaging and microscopes, our range opens up new ways to observe and explore.', 'Eyebre 源自浙江胤远光学仪器有限公司。数十年光学行业经验，连接对世界的持久热爱。我们提供双筒望远镜、单筒望远镜、天文望远镜、瞄准镜、夜视仪与热成像、显微镜等产品，为观察与探索打开更多可能。'],
+    '#home-reel-desc': ['At Eyebre, decades of experience in the optical industry meet an enduring curiosity about the world. From binoculars and monoculars to astronomical telescopes, riflescopes, night vision, thermal imaging and magnifiers, our range opens up new ways to observe and explore.', 'Eyebre 源自浙江胤远光学仪器有限公司。数十年光学行业经验，连接对世界的持久热爱。我们提供双筒望远镜、单筒望远镜、天文望远镜、瞄准镜、夜视仪与热成像、放大镜等产品，为观察与探索打开更多可能。'],
     '#home-reel-cta-text': ['About Eyebre', '关于 Eyebre'],
     '#home-reel-video-title': ['Brand Film', '品牌 影片'],
     '#home-featured-title': ['Our Catalogues', '产品图册'],
@@ -101,7 +100,7 @@
   ['og:title','og:site_name','og:image:alt'].forEach(property => {
     const el = document.querySelector(`meta[property="${property}"]`); if (el) el.content = title;
   });
-  const description = t('Eyebre by Zhejiang Yinyuan Optical Instruments. Decades of optical industry experience, with binoculars, monoculars, astronomical telescopes, riflescopes, night vision, thermal imaging and microscopes.', '浙江胤远光学仪器有限公司旗下品牌 Eyebre，数十年光学行业经验，产品覆盖双筒望远镜、单筒望远镜、天文望远镜、瞄准镜、夜视仪与热成像、显微镜。');
+  const description = t('Eyebre by Zhejiang Yinyuan Optical Instruments. Decades of optical industry experience, with binoculars, monoculars, astronomical telescopes, riflescopes, night vision, thermal imaging and magnifiers.', '浙江胤远光学仪器有限公司旗下品牌 Eyebre，数十年光学行业经验，产品覆盖双筒望远镜、单筒望远镜、天文望远镜、瞄准镜、夜视仪与热成像、放大镜。');
   document.querySelectorAll('meta[name="description"],meta[property="og:description"]').forEach(el => el.content = description);
   document.querySelectorAll('meta[property="og:url"],meta[property="og:image"]').forEach(el => el.remove());
   document.querySelectorAll('link[rel="icon"],link[rel="shortcut icon"],link[rel="apple-touch-icon"],link[rel="mask-icon"]').forEach(el => { el.href='/assets/favicon.svg'; });
@@ -152,15 +151,15 @@
     address.querySelectorAll('.footer-address-line').forEach((el,i) => el.textContent=lines[i] || '');
   }
   const socials=document.querySelectorAll('.footer-socials-line');
-  socials.forEach((el,i) => { el.href='#home-featured';el.dataset.linkType='external';el.dataset.eyebreScroll='home-featured';el.removeAttribute('target');const label=el.querySelector('.footer-socials-text');if(label) label.textContent=(isZh?['双筒望远镜','天文望远镜','显微镜']:['Binoculars','Astronomy','Microscopy'])[i] || 'Eyebre'; });
+  socials.forEach((el,i) => { el.href='#home-featured';el.dataset.linkType='external';el.dataset.eyebreScroll='home-featured';el.removeAttribute('target');const label=el.querySelector('.footer-socials-text');if(label) label.textContent=(isZh?['双筒望远镜','天文望远镜','放大镜']:['Binoculars','Astronomy','Magnifiers'])[i] || 'Eyebre'; });
   document.querySelectorAll('#header-menu-newsletter-title > div').forEach((el,i) => el.textContent=(isZh?['了解更多','光学产品']:['Talk to our','optical team'])[i]);
   document.querySelectorAll('.footer-newsletter-line').forEach((el,i) => el.textContent=(isZh?['了解更多','光学产品']:['Talk to our','optical team'])[i]);
   ['header-menu-newsletter-input-field','footer-newsletter-input-field'].forEach(id=>{const el=document.getElementById(id);if(el){el.type='tel';el.value='139 0689 3397';el.readOnly=true;el.setAttribute('aria-label',t('Call Eyebre','电话联系 Eyebre'));el.removeAttribute('name');}});
   document.addEventListener('submit',event=>{if(event.target.matches('#header-menu-newsletter-form,#footer-newsletter-form')){event.preventDefault();event.stopImmediatePropagation();location.href='tel:+8613906893397';}},true);
 
-  // Preserve the card DOM and hover shaders with local catalogue covers.
+  // Preserve the reference card imagery and hover shaders for active catalogues.
   document.querySelectorAll('.project-item').forEach((card,i) => {
-    const catalogue=catalogues[i];
+    const catalogue=catalogues.find(item=>item.id===card.dataset.id);
     if(!catalogue){card.remove();return;}
     const title=card.querySelector('.project-item-line-2-inner');
     if(title)title.textContent=t(catalogue.en,catalogue.zh);
@@ -242,9 +241,9 @@
     const subtitle=document.getElementById('scroll-nav-subtitle');if(subtitle)subtitle.innerHTML=isZh?'继续探索<br>更多可能':'Keep Looking<br>Keep Exploring';
     document.querySelectorAll('.header-menu-link').forEach((link,i)=>link.querySelectorAll('.header-menu-link-text,.header-menu-link-text-clone').forEach(el=>el.textContent=(isZh?['首页','关于我们','产品图册','联系我们']:['Home','About us','Catalogues','Contact'])[i]));
     document.querySelectorAll('.footer-address-line').forEach((el,i)=>el.textContent=(isZh?['浙江胤远光学','仪器有限公司','中国 · 浙江','品牌 Eyebre']:['Zhejiang Yinyuan','Optical Instruments','Zhejiang, China','Eyebre'])[i]);
-    document.querySelectorAll('.footer-socials-text').forEach((el,i)=>el.textContent=(isZh?['双筒望远镜','天文望远镜','显微镜']:['Binoculars','Astronomy','Microscopy'])[i]);
+    document.querySelectorAll('.footer-socials-text').forEach((el,i)=>el.textContent=(isZh?['双筒望远镜','天文望远镜','放大镜']:['Binoculars','Astronomy','Magnifiers'])[i]);
     document.querySelectorAll('#header-menu-newsletter-title>div,.footer-newsletter-line').forEach((el,i)=>el.textContent=(isZh?['了解更多','光学产品']:['Talk to our','optical team'])[i%2]);
-    home.querySelectorAll('.project-item').forEach((card,i)=>{const c=catalogues[i];if(!c)return;card.querySelector('.project-item-line-2-inner').textContent=t(c.en,c.zh);card.querySelector('.project-item-line-1').textContent=t(c.subEn,c.subZh);card.setAttribute('aria-label',t(c.en,c.zh));updateCatalogueLink(card,c);});
+    home.querySelectorAll('.project-item').forEach((card,i)=>{const c=catalogues.find(item=>item.id===card.dataset.id);if(!c)return;card.querySelector('.project-item-line-2-inner').textContent=t(c.en,c.zh);card.querySelector('.project-item-line-1').textContent=t(c.subEn,c.subZh);card.setAttribute('aria-label',t(c.en,c.zh));updateCatalogueLink(card,c);});
     logo?.setAttribute('aria-label',t('Eyebre home','Eyebre 首页'));
     languageButton.querySelector('small').textContent=isZh?'中':'EN';
     control.querySelectorAll('[data-eyebre-lang]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.eyebreLang===lang)));
