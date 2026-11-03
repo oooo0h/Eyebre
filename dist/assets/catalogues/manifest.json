@@ -56,20 +56,16 @@
     "filename": "riflescopes.pdf",
     "original": "瞄准镜画册-最终版本.pdf",
     "pageCount": 91,
-    "bytes": 20303194,
-    "originalBytes": 103236796,
+    "bytes": 17527376,
+    "originalBytes": 106949139,
+    "sourceSha256": "7119ae3bd36d2939761c503c8482d3e43ea729a9d0ed5faa54d4089f0a6754fe",
+    "revision": "7119ae3bd36d2939",
     "textPreserved": true,
     "allPagesRenderable": true,
     "settings": {
-      "dpiThreshold": 180,
-      "dpiTarget": 150,
-      "jpegQuality": 80
-    },
-    "cover": "cover-riflescopes.webp",
-    "removedPrivateEditingData": false,
-    "fontSubsets": true,
-    "sourceSha256": "6b92a640aea9c0fc4812873af5606f113414bef645627cf0dd4d491fb6fa33d5",
-    "revision": "6b92a640aea9c0fc"
+      "maxRasterEdge": 1800,
+      "jpegQuality": 76
+    }
   },
   {
     "filename": "spotting-scopes.pdf",
