@@ -1,6 +1,6 @@
 {
   "slug": "binoculars",
-  "revision": "9ddcb7ec2cc4bcbd",
+  "revision": "1536c8e020080c75",
   "pageCount": 174,
   "pages": [
     {
@@ -1726,11 +1726,11 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 5028,
+      "bytes": 127642,
       "hd": {
         "width": 2600,
         "height": 3678,
-        "bytes": 17126
+        "bytes": 491076
       }
     },
     {
@@ -1744,6 +1744,6 @@
       }
     }
   ],
-  "bytes": 16978024,
-  "hdBytes": 72820154
+  "bytes": 17100638,
+  "hdBytes": 73294104
 }
