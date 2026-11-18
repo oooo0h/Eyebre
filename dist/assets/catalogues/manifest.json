@@ -36,21 +36,17 @@
   {
     "filename": "monoculars.pdf",
     "original": "单筒望远镜画册.pdf",
-    "pageCount": 44,
-    "bytes": 20475771,
-    "originalBytes": 23252331,
+    "pageCount": 45,
+    "bytes": 6738788,
+    "originalBytes": 26041567,
+    "sourceSha256": "b757019259f6bdb9d37645360c0da7e8c730438099e7702d1ccb29922152644a",
+    "revision": "b757019259f6bdb9",
     "textPreserved": true,
     "allPagesRenderable": true,
     "settings": {
-      "dpiThreshold": 180,
-      "dpiTarget": 150,
-      "jpegQuality": 80
-    },
-    "cover": "cover-monoculars.webp",
-    "removedPrivateEditingData": false,
-    "fontSubsets": true,
-    "sourceSha256": "b6669f95f825de9427a89e8553f99fd93c5d2a5362aaaf32548057ade1d10484",
-    "revision": "b6669f95f825de94"
+      "maxRasterEdge": 1800,
+      "jpegQuality": 76
+    }
   },
   {
     "filename": "riflescopes.pdf",

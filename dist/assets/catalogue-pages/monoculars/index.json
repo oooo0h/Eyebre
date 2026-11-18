@@ -1,11 +1,12 @@
 {
   "slug": "monoculars",
-  "pageCount": 44,
+  "revision": "b757019259f6bdb9",
+  "pageCount": 45,
   "pages": [
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 123600,
+      "bytes": 117326,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -15,7 +16,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 86246,
+      "bytes": 82530,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -25,7 +26,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 94690,
+      "bytes": 90024,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -35,7 +36,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 108152,
+      "bytes": 105688,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -45,7 +46,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 82754,
+      "bytes": 75670,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -55,7 +56,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 61324,
+      "bytes": 59292,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -65,7 +66,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 67122,
+      "bytes": 64396,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -75,7 +76,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 69454,
+      "bytes": 64844,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -85,7 +86,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 88398,
+      "bytes": 84582,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -95,7 +96,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 135378,
+      "bytes": 122554,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -105,7 +106,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 147766,
+      "bytes": 132600,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -115,7 +116,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 109530,
+      "bytes": 100324,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -125,7 +126,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 102020,
+      "bytes": 95618,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -135,7 +136,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 62798,
+      "bytes": 60514,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -145,7 +146,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 59286,
+      "bytes": 57706,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -155,7 +156,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 55546,
+      "bytes": 53790,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -165,7 +166,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 86882,
+      "bytes": 85552,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -175,7 +176,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 102438,
+      "bytes": 91264,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -185,7 +186,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 54252,
+      "bytes": 53174,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -195,7 +196,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 105528,
+      "bytes": 101526,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -205,7 +206,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 56266,
+      "bytes": 55260,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -215,7 +216,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 98466,
+      "bytes": 96840,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -225,7 +226,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 122280,
+      "bytes": 110304,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -235,7 +236,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 125134,
+      "bytes": 112338,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -245,7 +246,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 99974,
+      "bytes": 90472,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -255,7 +256,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 86634,
+      "bytes": 75506,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -265,7 +266,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 73904,
+      "bytes": 71770,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -275,7 +276,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 60104,
+      "bytes": 59064,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -285,7 +286,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 75980,
+      "bytes": 73560,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -295,7 +296,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 69216,
+      "bytes": 66532,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -305,7 +306,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 88530,
+      "bytes": 85124,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -315,7 +316,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 111486,
+      "bytes": 100078,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -325,7 +326,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 110568,
+      "bytes": 105172,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -335,7 +336,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 70296,
+      "bytes": 65846,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -345,7 +346,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 142270,
+      "bytes": 133628,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -355,7 +356,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 68870,
+      "bytes": 66846,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -365,7 +366,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 91818,
+      "bytes": 81722,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -375,7 +376,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 115828,
+      "bytes": 102744,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -385,7 +386,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 92964,
+      "bytes": 81244,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -395,7 +396,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 79580,
+      "bytes": 78082,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -405,7 +406,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 89634,
+      "bytes": 87868,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -415,7 +416,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 123816,
+      "bytes": 120430,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -425,7 +426,7 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 104714,
+      "bytes": 102690,
       "hd": {
         "width": 2600,
         "height": 3678,
@@ -435,15 +436,24 @@
     {
       "width": 1400,
       "height": 1980,
-      "bytes": 115058,
+      "bytes": 111692,
       "hd": {
         "width": 2600,
         "height": 3678,
         "bytes": 382678
       }
+    },
+    {
+      "width": 1400,
+      "height": 1980,
+      "bytes": 98732,
+      "hd": {
+        "width": 2600,
+        "height": 3678,
+        "bytes": 321106
+      }
     }
   ],
-  "bytes": 4076554,
-  "hdBytes": 16018846,
-  "revision": "b6669f95f825de94"
+  "bytes": 3932518,
+  "hdBytes": 16339952
 }
