@@ -5,7 +5,7 @@ Normal scheduled runs require a clean checkout and never stash/reset user work.
 """
 from pathlib import Path
 from io import BytesIO
-import argparse, contextlib, gc, hashlib, json, os, shutil, socket, subprocess, sys, time
+import argparse, contextlib, gc, hashlib, json, os, shutil, socket, subprocess, sys, time, warnings
 from datetime import datetime
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,9 +20,22 @@ PDFS = ROOT / 'dist/assets/catalogues'
 PAGES = ROOT / 'dist/assets/catalogue-pages'
 MANIFEST = PDFS / 'manifest.json'
 STATE = LOCAL / 'state.json'
+BOOK_NAMES = dict(zip(ACTIVE, ('双筒望远镜','天文望远镜','单筒望远镜','瞄准镜',
+                             '观靶镜','夜视仪','热成像（英文）','热成像（中文）','支架夹具','放大镜')))
+
+def book_name(slug):
+    return BOOK_NAMES.get(slug, slug)
 
 def log(message):
     print(f'[{datetime.now():%Y-%m-%d %H:%M:%S}] {message}', flush=True)
+
+def show_warning(message, category, filename, lineno, file=None, line=None):
+    if issubclass(category, Image.DecompressionBombWarning):
+        log('提示：原 PDF 包含超大图片，处理可能较慢；继续处理，保留图片大小安全限制。')
+    else:
+        log(f'警告（{category.__name__}）：{message}')
+
+warnings.showwarning = show_warning
 
 def read_json(path, default=None):
     return json.loads(path.read_text(encoding='utf-8')) if path.exists() else default
@@ -40,7 +53,7 @@ def sha256(path):
 def remove_local(path, allowed_root):
     path, allowed_root = path.resolve(), allowed_root.resolve()
     if path == allowed_root or not path.is_relative_to(allowed_root):
-        raise RuntimeError(f'Unsafe cleanup target: {path}')
+        raise RuntimeError(f'已阻止清理不安全的路径： {path}')
     if path.is_dir(): shutil.rmtree(path)
     elif path.exists(): path.unlink()
 
@@ -51,7 +64,7 @@ def exclusive_lock():
     with (LOCAL/'sync.lock').open('a+b') as stream:
         stream.seek(0); stream.write(b'0'); stream.flush(); stream.seek(0)
         try: msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
-        except OSError: raise RuntimeError('Another catalogue sync is already running')
+        except OSError: raise RuntimeError('已有一个画册同步任务正在运行，请勿重复启动')
         try: yield
         finally:
             stream.seek(0); msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
@@ -60,17 +73,17 @@ def fingerprints(config):
     result = {}
     for slug in ACTIVE:
         path = Path(config['sources'][slug])
-        if not path.is_file(): raise RuntimeError(f'Source unavailable (WeDrive not synced?): {path}')
+        if not path.is_file(): raise RuntimeError(f'源文件不可用，请确认微盘已同步： {path}')
         before = path.stat()
         digest = sha256(path)
         after = path.stat()
         if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):
-            raise RuntimeError(f'Source is being edited; retry later: {path.name}')
+            raise RuntimeError(f'源文件正在保存，请稍后重试： {path.name}')
         with pymupdf.open(path) as doc:
-            if doc.is_encrypted or not len(doc): raise RuntimeError(f'Unreadable PDF: {path.name}')
+            if doc.is_encrypted or not len(doc): raise RuntimeError(f'PDF 已加密、无页面或无法读取： {path.name}')
             count = len(doc)
         result[slug] = {'sha256':digest,'pageCount':count,'bytes':after.st_size}
-        log(f'Checked {slug}: {count} pages, SHA256 {digest[:12]}')
+        log(f'已检查{book_name(slug)}：{count} 页，内容校验值 SHA256 {digest[:12]}')
     return result
 
 def text_digest(doc):
@@ -82,10 +95,10 @@ def build_book(slug, source, expected, staging):
     book = staging/slug; book.mkdir()
     snapshot = book/'source.pdf'; shutil.copyfile(source,snapshot)
     if sha256(snapshot)!=expected['sha256'] or sha256(source)!=expected['sha256']:
-        raise RuntimeError(f'Source changed during snapshot: {source.name}')
+        raise RuntimeError(f'复制期间源文件发生变化，请稍后重试： {source.name}')
     destination = book/(slug+'.pdf')
     edge, quality = (1600,70) if slug=='binoculars' else (1800,76)
-    log(f'Building {slug}: optimized PDF and fresh SD/HD pages')
+    log(f'正在处理{book_name(slug)}：优化 PDF 并生成标清、高清预览')
     with pymupdf.open(snapshot) as doc:
         original_text, count = text_digest(doc), len(doc)
         images = {}
@@ -103,7 +116,7 @@ def build_book(slug, source, expected, staging):
                     doc[number].replace_image(xref,stream=buffer.getvalue()); changed+=1
             del raw
             pymupdf.TOOLS.store_shrink(100); gc.collect()
-            if changed and changed%30==0: log(f'{slug}: optimized {changed} embedded images')
+            if changed and changed%30==0: log(f'{book_name(slug)}：已优化 {changed} 张内嵌图片')
         for xref in range(1,doc.xref_length()):
             # Some Illustrator exports retain free/missing xref slots. They do
             # not represent page content; skip them during private-data cleanup.
@@ -114,12 +127,12 @@ def build_book(slug, source, expected, staging):
         doc.subset_fonts()
         doc.save(destination,garbage=4,deflate=True,deflate_images=True,deflate_fonts=True,use_objstms=1)
     if destination.stat().st_size>=90*1024**2:
-        raise RuntimeError(f'{slug}: web PDF exceeds safe GitHub file size; not publishing')
+        raise RuntimeError(f'{book_name(slug)}：网页 PDF 超过 GitHub 文件大小安全限制，停止发布')
     folder=book/'pages'; (folder/'hd').mkdir(parents=True)
     page_meta=[]
     with pymupdf.open(destination) as web, pymupdf.open(snapshot) as original:
-        assert len(web)==count==expected['pageCount'], 'Page count changed'
-        assert text_digest(web)==original_text, 'Extracted PDF text changed'
+        assert len(web)==count==expected['pageCount'], '优化后 PDF 页数发生变化，校验失败'
+        assert text_digest(web)==original_text, '优化后 PDF 文字发生变化，校验失败'
         for number in range(count):
             record={}
             for doc,width,height,q,target in [
@@ -135,7 +148,7 @@ def build_book(slug, source, expected, staging):
                 else: record['hd']=dimensions
             page_meta.append(record)
             pymupdf.TOOLS.store_shrink(100)
-            if number%10==0 or number+1==count: log(f'{slug}: rendered and decoded {number+1}/{count} pages')
+            if number%10==0 or number+1==count: log(f'{book_name(slug)}：已生成并验证 {number+1}/{count} 页预览')
         web[0].get_pixmap(dpi=90,alpha=False).pil_save(str(book/(slug+'-cover.webp')))
     meta={'slug':slug,'revision':expected['sha256'][:16],'pageCount':count,'pages':page_meta,
           'bytes':sum(p['bytes'] for p in page_meta),'hdBytes':sum(p['hd']['bytes'] for p in page_meta)}
@@ -174,7 +187,7 @@ def prepare(config, stamps, adopt=False):
     for slug in changed:built[slug]=build_book(slug,Path(config['sources'][slug]),stamps[slug],staging)
     for slug in ACTIVE:
         if sha256(Path(config['sources'][slug]))!=stamps[slug]['sha256']:
-            raise RuntimeError('A source changed while rendering; leaving the published assets unchanged')
+            raise RuntimeError('生成预览期间源文件发生变化，保留当前网站资源')
     backup=staging/'previous';backup.mkdir()
     metadata_backups=[]
     for index,path in enumerate([MANIFEST,PAGES/'manifest.json',*[PAGES/slug/'index.json' for slug in adopted]]):
@@ -208,23 +221,46 @@ def prepare(config, stamps, adopt=False):
         for old,saved in metadata_backups:
             shutil.copy2(saved,old)
         raise
-    log(f'Prepared {len(changed)} updated books; adopted {len(adopted)} unchanged books')
-    log(f'Local review/rollback files: {staging}')
+    log(f'已处理 {len(changed)} 本更新画册，已关联 {len(adopted)} 本未变动画册')
+    log(f'本机检查文件目录： {staging}')
     # Discard source snapshots and replaced derived assets; retain only QA images.
     for slug in changed:remove_local(staging/slug/'source.pdf',LOCAL)
     remove_local(backup,LOCAL)
     return True
 
-def command(args, capture=False, timeout=180):
-    result=subprocess.run(args,cwd=ROOT,text=True,encoding='utf-8',errors='replace',
-                          stdout=subprocess.PIPE if capture else None,stderr=subprocess.PIPE if capture else subprocess.STDOUT,timeout=timeout)
-    if result.returncode:
-        raise RuntimeError(f'Command failed ({result.returncode}): {args[0]} {args[1:3]}\n{result.stderr or ""}')
-    return result.stdout.rstrip('\r\n') if capture else ''
+def network_error(detail):
+    text = detail.lower()
+    return any(marker in text for marker in (
+        'eof', 'connection reset', 'connection refused', 'connection was reset',
+        'timed out', 'timeout', 'could not resolve host', 'temporary failure',
+        'failed to connect', 'network is unreachable', 'tls handshake',
+        'http 502', 'http 503', 'http 504', 'error: 502', 'error: 503', 'error: 504'))
+
+def command(args, capture=False, timeout=180, network_retry=False):
+    attempts = 3 if network_retry else 1
+    for attempt in range(1, attempts + 1):
+        try:
+            result=subprocess.run(args,cwd=ROOT,text=True,encoding='utf-8',errors='replace',
+                                  stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=timeout)
+            if not result.returncode:
+                return result.stdout.rstrip('\r\n') if capture else ''
+            detail = (result.stderr or '') + (result.stdout or '')
+            transient = network_error(detail)
+        except subprocess.TimeoutExpired:
+            detail = f'命令超过 {timeout} 秒未完成。'
+            transient = True
+        if network_retry and transient and attempt < attempts:
+            delay = attempt * 3
+            log(f'连接 GitHub 暂时中断，{delay} 秒后重试（第 {attempt + 1}/{attempts} 次）。')
+            time.sleep(delay)
+            continue
+        reason = '网络连接中断或超时；请检查代理节点与网络' if transient else '命令执行失败，请查看技术详情'
+        raise RuntimeError(f'{reason}。程序：{Path(args[0]).name}\n{detail}')
 
 def git(*args,capture=False):
     return command(['git','-c',f'safe.directory={ROOT.as_posix()}','-c','http.sslBackend=openssl',
-                    '-c','credential.helper=','-c','credential.helper=!gh auth git-credential',*args],capture=capture)
+                    '-c','credential.helper=','-c','credential.helper=!gh auth git-credential',*args],
+                   capture=capture,network_retry=bool(args and args[0] in ('fetch','push')))
 
 def network(config):
     os.environ['GIT_TERMINAL_PROMPT']='0'
@@ -236,28 +272,34 @@ def network(config):
         try:
             with socket.create_connection((address.hostname,address.port),timeout=1):pass
             os.environ['HTTPS_PROXY']=proxy;os.environ['HTTP_PROXY']=proxy
-        except OSError:log('Local proxy unavailable; trying direct HTTPS')
+            log(f'使用本机代理 {address.hostname}:{address.port}；端口可连接，外网连接将在请求时确认。')
+        except OSError:
+            # Do not inherit a dead proxy while claiming to use a direct connection.
+            for key in ('HTTPS_PROXY','HTTP_PROXY','ALL_PROXY','https_proxy','http_proxy','all_proxy'):
+                os.environ.pop(key, None)
+            os.environ['NO_PROXY']='*'
+            log('本机代理不可用，尝试直接连接 GitHub。')
 
 def wait_pages(config, sha, retry=False):
     repo=config['repository']; deadline=time.monotonic()+1500; dispatched=False; previous_run=None
     while time.monotonic()<deadline:
         rows=json.loads(command(['gh','run','list','--repo',repo,'--workflow','pages.yml','--commit',sha,
-                                 '--limit','5','--json','databaseId,status,conclusion,url'],capture=True))
+                                 '--limit','5','--json','databaseId,status,conclusion,url'],capture=True,network_retry=True))
         if rows:
             run=rows[0]
             if dispatched and run['databaseId']==previous_run:
-                log('Waiting for the retried Pages workflow');time.sleep(15);continue
+                log('正在等待重新启动的网站部署任务');time.sleep(15);continue
             if run['status']=='completed':
-                if run['conclusion']=='success':log('GitHub Pages deployed successfully: '+run['url']);return
+                if run['conclusion']=='success':log('网站部署成功：'+run['url']);return
                 if retry and not dispatched:
                     command(['gh','workflow','run','pages.yml','--repo',repo,'--ref','main']);dispatched=True
                     previous_run=run['databaseId']
-                    log('Retrying the failed Pages deployment');time.sleep(20);continue
-                raise RuntimeError('Pages deployment failed: '+run['url'])
-            log('Waiting for GitHub Pages: '+run['status'])
-        else:log('Waiting for the Pages workflow to start')
+                    log('上次网站部署失败，已请求重新部署');time.sleep(20);continue
+                raise RuntimeError('网站部署失败，请查看部署详情：'+run['url'])
+            log('正在等待网站部署，状态：'+{'queued':'排队中','in_progress':'执行中','waiting':'等待中','requested':'已请求','pending':'待处理'}.get(run['status'],run['status']))
+        else:log('正在等待网站部署任务启动')
         time.sleep(15)
-    raise RuntimeError('Timed out waiting for Pages. A later run will retry the pending deployment.')
+    raise RuntimeError('等待网站部署超时；已保留待确认记录，下次运行会继续确认')
 
 def main():
     sys.stdout.reconfigure(encoding='utf-8')
@@ -270,30 +312,34 @@ def main():
     with exclusive_lock():
         state=read_json(STATE,{})
         if not (args.prepare_only or args.check_only):
-            if git('status','--porcelain',capture=True):raise RuntimeError('Working tree has uncommitted changes; automatic sync will not change them')
-            if git('branch','--show-current',capture=True)!='main':raise RuntimeError('Automatic sync requires main')
+            if git('status','--porcelain',capture=True):raise RuntimeError('项目有未提交的本地修改；为保护现有工作，同步已停止，请先处理本地修改')
+            if git('branch','--show-current',capture=True)!='main':raise RuntimeError('自动同步需要在 main 分支运行')
             if git('remote','get-url','origin',capture=True).removesuffix('.git')!='https://github.com/'+config['repository']:
-                raise RuntimeError('Unexpected Git remote')
+                raise RuntimeError('Git 远程仓库与配置不一致，停止同步')
+            log('正在获取 GitHub 最新版本。')
             git('fetch','origin','main');git('merge','--ff-only','origin/main')
+            log('远程版本检查完成。')
             head=git('rev-parse','HEAD',capture=True)
             ahead=git('rev-list','origin/main..HEAD',capture=True)
             if ahead and not args.publish_current and state.get('pendingCommit')!=head:
-                raise RuntimeError('Unpublished user commits exist; automatic sync will not publish them')
+                raise RuntimeError('存在尚未推送的人工提交，请先确认并处理，再运行自动同步')
         stamps=fingerprints(config)
         if args.check_only:
             records={Path(r['filename']).stem:r for r in read_json(MANIFEST,[])}
             changes=[slug for slug in ACTIVE if records.get(slug,{}).get('sourceSha256')!=stamps[slug]['sha256']]
-            log('Changed sources: '+(', '.join(changes) if changes else 'none'));return
+            log('内容有变化的画册：'+('、'.join(book_name(slug) for slug in changes) if changes else '无'));return
         changed=prepare(config,stamps,args.adopt_unchanged)
-        if args.prepare_only:log('Local preparation complete; no Git upload requested');return
+        if args.prepare_only:log('本机资源生成完成，本次未执行上传');return
         if changed:
+            log('正在校验预览脚本、手势和画册资源。')
             command(['node','--check','dist/catalogue-preview.js'])
             command(['node','scripts/check-catalogue-gestures.cjs'])
             command(['node','scripts/check-catalogue-assets.mjs'])
+            log('预览脚本、手势和画册资源校验通过。')
             allowed=('dist/assets/catalogues/','dist/assets/catalogue-pages/','dist/catalogues/')
             status=git('status','--porcelain','--untracked-files=all',capture=True)
             unexpected=[line[3:].strip('"') for line in status.splitlines() if not line[3:].strip('"').startswith(allowed)]
-            if unexpected:raise RuntimeError('Other files changed during rendering; not committing: '+', '.join(unexpected))
+            if unexpected:raise RuntimeError('生成期间有其他文件发生变化，停止提交：'+', '.join(unexpected))
             git('add','--','dist/assets/catalogues','dist/assets/catalogue-pages','dist/catalogues')
             git('-c','user.name=Eyebre Catalogue Sync','-c','user.email=codex@users.noreply.github.com',
                 'commit','-m','Update catalogue PDFs and page previews (automatic sync)')
@@ -301,17 +347,29 @@ def main():
         elif args.publish_current:
             state['pendingCommit']=git('rev-parse','HEAD',capture=True);save_json(STATE,state)
         sha=state.get('pendingCommit')
-        if not sha:log('No PDF content changed. Nothing to upload.');return
-        if sha!=git('rev-parse','HEAD',capture=True):raise RuntimeError('Checkout moved since the pending publication; manual review needed')
+        if not sha:log('所有画册内容均未变化，无需上传');return
+        if sha!=git('rev-parse','HEAD',capture=True):raise RuntimeError('当前提交与待发布记录不一致，请人工检查后继续')
+        log('正在推送画册更新至 GitHub。')
         git('push','origin','main')
+        log('GitHub 已接收更新，正在确认网站部署结果。')
         wait_pages(config,sha,retry=True)
         state={'lastPublishedCommit':sha,'lastPublishedAt':datetime.now().astimezone().isoformat(),
                'sources':{slug:item['sha256'] for slug,item in stamps.items()}}
         save_json(STATE,state)
-        log('SUCCESS. All changed catalogues are live; this window will close.')
+        log('同步成功：所有更新画册已上线，窗口即将关闭。')
 
 if __name__=='__main__':
     try:main()
     except Exception as error:
         import traceback
-        log('FAILED: '+str(error));traceback.print_exc(file=sys.stdout);sys.exit(1)
+        details = LOCAL/'logs'/('diagnostic-'+datetime.now().strftime('%Y%m%d-%H%M%S')+'.log')
+        try:
+            details.parent.mkdir(parents=True,exist_ok=True)
+            details.write_text(traceback.format_exc(),encoding='utf-8')
+        except OSError:
+            details = None
+        log('同步未完成：'+str(error).splitlines()[0])
+        if STATE.exists() and read_json(STATE,{}).get('pendingCommit'):
+            log('已有待确认的发布记录；此提示不代表网站部署失败，恢复网络后可继续确认。')
+        if details:log('原始错误与技术详情已保存至：'+str(details))
+        sys.exit(1)

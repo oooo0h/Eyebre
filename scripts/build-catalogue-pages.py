@@ -30,4 +30,4 @@ for slug,en,zh in books:
  page=template.replace('{SLUG}',slug).replace('{EN}',html.escape(en,quote=True)).replace('{ZH}',html.escape(zh,quote=True)).replace('<title>PDF.js viewer</title>',f'<title>{html.escape(en)} | Eyebre</title>')
  page=page.replace('data-catalogue="'+slug+'"','data-catalogue="'+slug+'" data-revision="'+revision+'"')
  dest=ROOT/'dist/catalogues'/slug/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(page,encoding='utf-8')
-print(f'Generated {len(books)} direct catalogue preview pages')
+print(f'已生成 {len(books)} 个画册直达预览页面')

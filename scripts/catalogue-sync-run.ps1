@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
 $env:PYTHONIOENCODING = 'utf-8'
 $repoPath = Split-Path -Parent $PSScriptRoot
@@ -9,7 +9,7 @@ $env:PATH = "$($syncConfig.nodeDirectory);$($syncConfig.gitDirectory);$($syncCon
 $logDirectory = Join-Path $repoPath '.catalogue-sync\logs'
 New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
 $logPath = Join-Path $logDirectory ('sync-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.log')
-Write-Host "Eyebre catalogue sync - log: $logPath"
+Write-Host "Eyebre 画册同步，日志： $logPath"
 try {
     # Windows PowerShell 5 treats even successful native stderr (git progress)
     # as ErrorRecord objects. Use the process exit status to decide success.

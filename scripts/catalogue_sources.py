@@ -10,10 +10,10 @@ ACTIVE = ('binoculars','astronomical-telescopes','monoculars','riflescopes',
 def load_config():
     path = LOCAL / 'config.json'
     if not path.is_file():
-        raise RuntimeError(f'Missing local source configuration: {path}')
+        raise RuntimeError(f'缺少本机源文件配置： {path}')
     config = json.loads(path.read_text(encoding='utf-8'))
     if set(config['sources']) != set(ACTIVE):
-        raise RuntimeError('Source configuration must contain the ten active catalogues')
+        raise RuntimeError('源文件配置必须包含全部 10 本启用的画册')
     return config
 
 def source_path(slug):
