@@ -1,7 +1,7 @@
 {
   "slug": "riflescopes",
-  "revision": "7119ae3bd36d2939",
-  "pageCount": 91,
+  "revision": "cbf34ac665d7f548",
+  "pageCount": 92,
   "pages": [
     {
       "width": 1400,
@@ -91,6 +91,16 @@
         "width": 2600,
         "height": 1839,
         "bytes": 382188
+      }
+    },
+    {
+      "width": 1400,
+      "height": 990,
+      "bytes": 57980,
+      "hd": {
+        "width": 2600,
+        "height": 1839,
+        "bytes": 206074
       }
     },
     {
@@ -914,6 +924,6 @@
       }
     }
   ],
-  "bytes": 4564042,
-  "hdBytes": 17803570
+  "bytes": 4622022,
+  "hdBytes": 18009644
 }
